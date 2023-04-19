@@ -6,8 +6,7 @@ import './index.less';
 // }
 
 const Map:FC<{id: string}> = (props) => {
-  const { id } = props;
-
-  return <div className='mapCons'>地图组件</div>
+  const { id } = props
+  return <div className='mapCons'>静态文本</div>
 }
 export default Map
