@@ -6,13 +6,10 @@ interface ComponentObj {
   config: any
 }
 const componentFileNames = [
-  StaticTextC as unknown as ComponentObj
+  StaticTextC
 ]
-
 export const componentList: {[x: string]: ComponentObj} = {}
 componentFileNames.forEach( (item: ComponentObj)=> {
-  // const module = await import(item);
-  // setMyComponent(module.default);
   console.log(item)
   componentList[item.componentName] = (item)
 })
