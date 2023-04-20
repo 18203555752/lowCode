@@ -17,7 +17,10 @@ declare module '*.json' {
   const content: any;
   export default content;
 }
-
+declare module '*.less' {
+  const content: any;
+  export default content;
+}
 
 declare module "react/jsx-runtime" {
   export default any;
