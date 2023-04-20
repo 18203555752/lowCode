@@ -7,25 +7,29 @@ import CenterCanvas  from './components/CenterCanvas';
 import React, { Suspense, useState } from 'react';
 import {componentList} from './loadComponents'
 import {BasicStore} from '@/contexts/componentList'
+import { ComponentObj } from '@/types/basicStore';
 console.log(componentList)
 const { Header, Content, Sider } = Layout;
 
 export const Index = () => {
-  const [coms, setComs] = useState<any[]>([])
-  setTimeout(()=> {
-    setComs([componentList.StaticText])
-  }, 2000 )
+  const [componentData, setComponentData] = useState<ComponentObj[]>([])
+  const [curComponent, setCurComponent] = useState<ComponentObj| null>(null)
+  console.log(componentData)
+  const handle = ()=> {
+    setComponentData([componentList.StaticText])
+  }
   return (
-    <BasicStore.Provider value={{list: coms}}>
+    <BasicStore.Provider value={{componentData, curComponent}}>
       <Layout style={{color: '#fff', height: '100vh'}}>
         <Header style={{background: 'rgb(33, 37, 40)'}}><PageHeader /></Header>
+        <button onClick={handle}>添加</button>
         <Layout style={{height: 'calc(100% - 80px)'}}>
           <Sider collapsible width={200} style={{background: 'rgb(33, 37, 40)'}}>
             sider
           </Sider>
           <Content style={{background: 'rgb(39, 46, 59)'}}>
             <CenterCanvas name='画布区域'></CenterCanvas>
-            {coms.map((item)=> <Suspense fallback={<div>Loading...</div>}>
+            {componentData.map((item)=> <Suspense key={item.componentName} fallback={<div>Loading...</div>}>
               <item.component ></item.component>
             </Suspense>)}
           </Content>
