@@ -107,15 +107,16 @@ const configStyle: ConfigStyle = {
 
 }
 
-class Component {
-  private com: Function
+export class Component {
+  private com?: Function
   private styles!: Styles
   private attrs!: Attrs
   private datas!: Datas
   private _top = 0
   private _left = 0
-  constructor(fn: Function) {
-    this.com = fn
+  constructor(fn?: Function) {
+    if (fn)
+      this.com = fn
     this.styles = { position: [], fontSet: [] }
   }
   get left() {

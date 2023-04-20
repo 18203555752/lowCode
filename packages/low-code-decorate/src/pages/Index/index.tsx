@@ -30,7 +30,7 @@ export const Index = () => {
             </Suspense>)}
           </Content>
           <Sider width={200} style={{background: 'rgb(33, 37, 40)'}}>
-            sider
+          <RightProperty></RightProperty>  
           </Sider>
         </Layout>
       </Layout>
