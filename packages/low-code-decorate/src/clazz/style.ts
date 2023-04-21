@@ -1,4 +1,5 @@
 
+import { nanoid } from 'nanoid'
 export interface Option {
   name: string
   val: string | number
@@ -108,15 +109,16 @@ const configStyle: ConfigStyle = {
 }
 
 export class Component {
-  private com?: Function
+  id = nanoid()
+  private name?: string
   private styles!: Styles
   private attrs!: Attrs
   private datas!: Datas
   private _top = 0
   private _left = 0
-  constructor(fn?: Function) {
-    if (fn)
-      this.com = fn
+  constructor(name?: string) {
+    if (name)
+      this.name = name
     this.styles = { position: [], fontSet: [] }
   }
   get left() {
