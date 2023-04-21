@@ -90,15 +90,15 @@ const configStyle: ConfigStyle = {
   },
   "width": {
     type: "number",
-    style: "marginTop",
+    style: "width",
     name: "宽度",
     readonly: false,
-    val: 100,
+    val: 300,
     unit: "px",
   },
   "height": {
     type: "number",
-    style: "marginTop",
+    style: "height",
     name: "高度",
     readonly: false,
     val: 100,
