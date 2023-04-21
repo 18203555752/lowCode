@@ -1,6 +1,6 @@
 import { ComponentObj } from '@/types/basicStore';
 import React, { FC } from 'react';
-import StaticTextC from '../../../components/StaticTextC/index'
+import StaticTextC from '../../components/StaticTextC/index'
 
 const componentFileNames = [
   StaticTextC

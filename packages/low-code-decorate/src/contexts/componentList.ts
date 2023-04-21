@@ -1,11 +1,10 @@
-import { ComponentObj } from '@/types/basicStore';
-import React from 'react';
+import { ComponentObj, type BasicStore } from '@/types/basicStore';
+import React, {type Dispatch} from 'react';
 
-interface BasicStore{
-  componentData: ComponentObj[]
-  curComponent: ComponentObj | null
-}
-export const BasicStore = React.createContext<BasicStore>({
-  componentData: [],
-  curComponent: null
+export const basicStoreConText = React.createContext<{basicStore: BasicStore, dispatch: any}>({
+  basicStore: {
+    componentData: [],
+    curComponent: null,
+  },
+  dispatch: ()=> {}
 });
