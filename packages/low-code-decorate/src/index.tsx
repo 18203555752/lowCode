@@ -11,13 +11,9 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as Element
 )
 root.render(
-  <React.StrictMode>
-  <ConfigProvider  theme={{
-        algorithm: theme.darkAlgorithm,
-    }}>
+  // <React.StrictMode>
     <App />
-  </ConfigProvider>
-  </React.StrictMode>
+  // </React.StrictMode>
 )
 
 reportWebVitals()
