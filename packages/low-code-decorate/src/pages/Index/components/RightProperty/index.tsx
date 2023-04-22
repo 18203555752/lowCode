@@ -1,9 +1,9 @@
 
 import { Form, Input, Select, Tabs } from 'antd';
 import type { TabsProps } from 'antd';
-import { Component, StyleItem } from "@/clazz/style"
+import { BaseComponent, StyleItem } from "@/clazz/style"
 const { Option } = Select;
-const compoent = new Component()
+const compoent = new BaseComponent('default')
 compoent.buildStyle()
 console.log(compoent)
 
@@ -37,7 +37,6 @@ const getItem = (item: StyleItem) => {
       >
         <Input />
       </Form.Item>
-      break
   }
 
 }
@@ -45,7 +44,7 @@ const getItem = (item: StyleItem) => {
 const getinitaValues = () => {
   const obj: any = {}
   //  return  compoent.pos.map(item => ({[item.style]:item.val}))
-  compoent.pos.forEach(item => {
+  compoent.position.forEach(item => {
     obj[item.style] = item.val
   })
   return obj
@@ -63,7 +62,7 @@ const getStyle = () => {
     initialValues={getinitaValues()}
     autoComplete="off"
   >
-    {compoent.pos.map(item => getItem(item))}
+    {compoent.position.map(item => getItem(item))}
 
   </Form>;
 }

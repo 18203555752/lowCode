@@ -14,7 +14,6 @@ const { Header, Content, Sider } = Layout;
 
 export const Index = () => {
   const [basicStore, dispatch] = useReducer(basicStoreReducer, initialBasicStore)
-  console.log(basicStore)
   
   return (
     <basicStoreConText.Provider value={{basicStore, dispatch}}>

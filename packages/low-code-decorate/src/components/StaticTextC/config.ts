@@ -1,12 +1,12 @@
-import { Component } from "@/clazz/style"
+import { BaseComponent } from "@/clazz/style"
 
 export const componentName = 'StaticText'
 
-class StaticTextComponent extends Component {
-  static POSITION = ["width", "height"]
+class StaticTextComponent extends BaseComponent {
+  static POSITION = ["width", "height", "left", "top"]
   static FONTS = ["fontSize"]
-  constructor(name: string) {
-    super(name)
+  constructor() {
+    super(componentName)
     this.buildStyle(StaticTextComponent.POSITION, StaticTextComponent.FONTS)
 
   }

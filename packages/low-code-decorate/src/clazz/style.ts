@@ -105,37 +105,59 @@ const configStyle: ConfigStyle = {
     val: 100,
     unit: "px",
   },
-
+  "left": {
+    type: "number",
+    style: "left",
+    name: "x坐标",
+    readonly: false,
+    val: 0,
+    unit: "px",
+  },
+  "top": {
+    type: "number",
+    style: "top",
+    name: "y坐标",
+    readonly: false,
+    val: 0,
+    unit: "px",
+  },
 }
 
-export class Component {
-  id = nanoid()
-  private name?: string
+export class BaseComponent {
+  id : string
+  name: string
   private styles!: Styles
   private attrs!: Attrs
   private datas!: Datas
   private _top = 0
   private _left = 0
-  constructor(name?: string) {
-    if (name)
-      this.name = name
+  private currentActive : boolean
+  constructor(name: string) {
+    this.id= nanoid()
+    // console.log('初始化id', name, this.id)
+    this.name = name
     this.styles = { position: [], fontSet: [] }
+    this.currentActive = false
   }
   get left() {
-    return this._left
+    return this.styles.position[2]
   }
   get top() {
-    return this._top
+    return this.styles.position[3]
   }
 
-  get pos() {
+  get position() {
     return this.styles.position
   }
   get fonts() {
     return this.styles.fontSet
   }
 
-  buildStyle(position = ["width", "height"], fonts = ["fontSize"]) {
+  get active() {
+    return this.currentActive
+  }
+
+  buildStyle(position = ["width", "height", "left", "top"], fonts = ["fontSize"]) {
     position.forEach(key => {
       this.styles.position.push(configStyle[key])
     })
@@ -153,7 +175,7 @@ export class Component {
     return this
   }
 
-  setPos(key: string, val: number | string) {
+  setPosition(key: string, val: number | string) {
     const tmp = this.styles.position.find(item => item.style == key)
     if (tmp) {
       tmp.val = val
@@ -167,5 +189,9 @@ export class Component {
       tmp.val = val
     }
     return this;
+  }
+
+  setCurrentActive(val: boolean) {
+    this.currentActive = val
   }
 }
