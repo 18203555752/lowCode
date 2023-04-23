@@ -1,72 +1,11 @@
 
-import { Form, Input, Select, Tabs } from 'antd';
+import { Form, Input, Menu, MenuProps, Select, Tabs } from 'antd';
+import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
 import type { TabsProps } from 'antd';
-import { Component, StyleItem } from "@/clazz/style"
-const { Option } = Select;
-const compoent = new Component()
-compoent.buildStyle()
-console.log(compoent)
-
-const getItem = (item: StyleItem) => {
-  switch (item.type) {
-    case 'number':
-      return <Form.Item
-        label={item.name}
-        name={item.style}
-      >
-        <Input />
-      </Form.Item>
-    case 'select':
-      return <Form.Item
-        label={item.name}
-        name={item.style}
-      >
-        <Select
-          placeholder="Select a option and change input text above"
-
-          allowClear
-        >
-          {item.list?.map(_ => <Option value={_.val}>{_.name}</Option>)}
-
-        </Select>
-      </Form.Item>
-    case 'color':
-      return <Form.Item
-        label={item.name}
-        name={item.style}
-      >
-        <Input />
-      </Form.Item>
-      break
-  }
-
-}
-
-const getinitaValues = () => {
-  const obj: any = {}
-  //  return  compoent.pos.map(item => ({[item.style]:item.val}))
-  compoent.pos.forEach(item => {
-    obj[item.style] = item.val
-  })
-  return obj
-}
-
-
-const getStyle = () => {
-  console.log(getinitaValues())
-
-  return <Form
-    name="basic"
-    labelCol={{ span: 8 }}
-    wrapperCol={{ span: 16 }}
-    style={{ maxWidth: 600 }}
-    initialValues={getinitaValues()}
-    autoComplete="off"
-  >
-    {compoent.pos.map(item => getItem(item))}
-
-  </Form>;
-}
+import { getStyle } from './style/tabStyle';
+import l from  "./index.less"
+import { useState } from 'react';
+console.log(l)
 
 
 
@@ -74,6 +13,7 @@ const items: TabsProps['items'] = [
   {
     key: '1',
     label: `样式`,
+    
     children: getStyle(),
   },
   {
@@ -93,5 +33,8 @@ const onChange = (key: string) => {
 };
 
 export const RightProperty = () => {
-  return <div><Tabs defaultActiveKey="1" items={items} onChange={onChange}></Tabs></div>
+  // useState()
+  return <div>
+    <Tabs className='custom-tab' defaultActiveKey="1" items={items} onChange={onChange}></Tabs>
+    </div>
 }

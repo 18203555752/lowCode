@@ -1,13 +1,14 @@
-import { Component } from "@/clazz/style"
+import { ConfigKey } from "@/clazz/config"
+import { ComponentInfo } from "@/clazz/style"
 
 export const componentName = 'StaticText'
 
-class StaticTextComponent extends Component {
-  static POSITION = ["width", "height"]
-  static FONTS = ["fontSize"]
+class StaticTextComponent extends ComponentInfo {
+  static POSITION: ConfigKey[] = ["width", "height"]
+  static FONTS: ConfigKey[] = ["fontSize","fontWeight"]
   constructor(name: string) {
     super(name)
-    this.buildStyle(StaticTextComponent.POSITION, StaticTextComponent.FONTS)
+    this.style.buildStyle(StaticTextComponent.POSITION, StaticTextComponent.FONTS)
 
   }
 }

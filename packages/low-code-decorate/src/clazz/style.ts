@@ -1,124 +1,16 @@
 
 import { nanoid } from 'nanoid'
-export interface Option {
-  name: string
-  val: string | number
-
-}
+import { StyleItem, Styles } from './type'
+import { ConfigKey, configStyle } from './config'
 
 
-export interface StyleItem {
-  type: string
-  name: string
-  style: string
-  readonly?: boolean
-  val: string | number
-  unit?: string
-  list?: Option[]
-  sort?: number
-}
+class Style {
 
-
-export interface Styles {
-  position: StyleItem[]
-  fontSet: StyleItem[]
-}
-export interface Attrs {
-  publicAttr: StyleItem[]
-  basicAttr: StyleItem[]
-}
-
-
-export interface Datas {
-  list: StyleItem[]
-}
-
-interface ConfigStyle {
-  [key: string]: StyleItem
-}
-
-const configStyle: ConfigStyle = {
-  'fontSize': {
-    type: "number",
-    style: "fontSize",
-    name: "字体大小",
-    readonly: false,
-    val: 14,
-    unit: "px",
-  },
-  'fontWeight': {
-    type: "select",
-    style: "fontWeight",
-    name: "字体宽度",
-    readonly: false,
-    val: "normal",
-    list: [
-      { name: "normal", val: "normal" },
-      { name: "500", val: 500 },
-      { name: "bolder", val: "bolder" },
-    ]
-  },
-  'color': {
-    type: "color",
-    style: "color",
-    name: "颜色",
-    readonly: false,
-    val: "#333",
-  },
-  "marginLeft": {
-    type: "number",
-    style: "marginLeft",
-    name: "左边距",
-    readonly: false,
-    val: 10,
-    unit: "px",
-  },
-  "marginRight": {
-    type: "number",
-    style: "marginRight",
-    name: "右边距",
-    readonly: false,
-    val: 10,
-    unit: "px",
-  },
-  "marginTop": {
-    type: "number",
-    style: "marginTop",
-    name: "上边距",
-    readonly: false,
-    val: 10,
-    unit: "px",
-  },
-  "width": {
-    type: "number",
-    style: "width",
-    name: "宽度",
-    readonly: false,
-    val: 300,
-    unit: "px",
-  },
-  "height": {
-    type: "number",
-    style: "height",
-    name: "高度",
-    readonly: false,
-    val: 100,
-    unit: "px",
-  },
-
-}
-
-export class Component {
-  id = nanoid()
-  private name?: string
   private styles!: Styles
-  private attrs!: Attrs
-  private datas!: Datas
   private _top = 0
   private _left = 0
-  constructor(name?: string) {
-    if (name)
-      this.name = name
+  constructor() {
+
     this.styles = { position: [], fontSet: [] }
   }
   get left() {
@@ -127,24 +19,72 @@ export class Component {
   get top() {
     return this._top
   }
+  /**
+   * 所有的样式
+   * Object的key小驼峰命名
+   * return Object
+   */
+  get allStyles() {
+    const o: any = {}
+    this.styles.position.forEach(item => {
+      o[item.style] = item.val + "" + (item.unit || "")
+    })
+    this.styles.fontSet.forEach(item => {
+      o[item.style] = item.val + "" + (item.unit || "")
+    })
+    o.left = this._left + 'px'
+    o.top = this._top + 'px'
+    return o;
 
+
+  }
+
+  /**
+   * 所有和位置相关的信息
+   * return StyleItem[]
+   */
   get pos() {
     return this.styles.position
   }
+  /**
+ * 所有和字体相关的信息
+ * return StyleItem[]
+ */
   get fonts() {
     return this.styles.fontSet
   }
 
-  buildStyle(position = ["width", "height"], fonts = ["fontSize"]) {
+  /**
+   * 查找需要更新的样式
+   * @param key 
+   * @param styleList 
+   * @returns 
+   */
+  private getStyleItemByKey(key: string, styleList: StyleItem[]): StyleItem | undefined {
+    return styleList.find(item => item.style === key)
+  }
+
+  /**
+   * 设置样式信息
+   * @param position string[] 
+   * @param fonts string[]
+   * @returns Style
+   */
+  buildStyle(position: ConfigKey[] = ["width", "height"], fonts: ConfigKey[] = ["fontSize"]) {
     position.forEach(key => {
-      this.styles.position.push(configStyle[key])
+      this.styles.position.push({ ...configStyle[key] })
     })
     fonts.forEach(key => {
-      this.styles.fontSet.push(configStyle[key])
+      this.styles.fontSet.push({ ...configStyle[key] })
     })
     return this;
   }
-
+  /**
+   * 设置位置的left和top信息绝对或相对定位
+   * @param left 
+   * @param top 
+   * @returns Style
+   */
   setLeftAndTop(left: number, top?: number) {
     this._top = left;
     if (top) {
@@ -153,19 +93,51 @@ export class Component {
     return this
   }
 
+  /**
+   * 设置位置信息
+   * @param key 样式的名字
+   * @param val 设置的值
+   * @returns  Style
+   */
   setPos(key: string, val: number | string) {
-    const tmp = this.styles.position.find(item => item.style == key)
+    const tmp = this.getStyleItemByKey(key, this.styles.position)
     if (tmp) {
       tmp.val = val
     }
     return this
   }
-
+  /**
+   * 设置字体相关的样式
+   * @param key 字体的名字 
+   * @param val 设置的值
+   * @returns Style
+   */
   setFont(key: string, val: number | string) {
-    const tmp = this.styles.fontSet.find(item => item.style == key)
+    const tmp = this.getStyleItemByKey(key, this.styles.fontSet)
     if (tmp) {
       tmp.val = val
     }
     return this;
   }
+
+}
+
+
+
+export class ComponentInfo {
+  id = nanoid()
+  name = ""
+  private _style: Style
+
+  constructor(name?: string) {
+    if (name)
+      this.name = name
+    this._style = new Style()
+  }
+
+  get style() {
+    return this._style
+  }
+
+
 }

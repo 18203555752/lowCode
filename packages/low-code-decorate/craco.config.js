@@ -1,11 +1,14 @@
 const path = require('path');
+const CracoLessPlugin = require("craco-less");
 
 module.exports = {
   // ...
   webpack: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
-    }
+    },
+
+
   },
   style: {
     postcss: {
@@ -14,6 +17,9 @@ module.exports = {
         require('autoprefixer'),
       ],
     },
+
   },
+  plugins: [{ plugin: CracoLessPlugin }],
+
 
 }
