@@ -1,10 +1,20 @@
 .style-collapse{
   border: none;
   color: aquamarine;
+  .color-bg{
+    &:hover{
+      .color-panel{
+        display:block;
+      }
+    }
+
+  }
   .color-panel{
+    display: none;
     position: absolute;
     right: 0;
-    top: 28px;
+    top: 25px;
+    
   }
   .ant-collapse-content-box{
     padding: 10px 5px !important;

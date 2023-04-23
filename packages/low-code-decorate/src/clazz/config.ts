@@ -71,5 +71,14 @@ export const configStyle = {
 
 }
 
+export const configAttr = {
+  'input': {
+    type: StyleItemType.Number,
+    style: "input",
+    name: "内容",
+    readonly: false,
+    val: "",
+  },
+}
 
 export type ConfigKey = keyof  typeof configStyle

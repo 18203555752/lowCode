@@ -12,11 +12,8 @@ export default (state: BasicStore, action: { type: string, payload: any }) => {
     switch (type) {
         case 'appendComponent':
             return appendComponent(state, payload)
-
         case 'setCurComponent':
-
             return { ...state, curComponent: payload }
-
         case 'changeComponentPosition': 
             return changeComponentPosition(state, payload)
             

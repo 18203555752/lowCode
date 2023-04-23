@@ -33,17 +33,11 @@ const getinitaFontValues = () => {
 }
 
 
-const getFormItem = (item: StyleItem) => {
-
-  // const [color, setColor] = useState("#00ff00");
-  function handleChangeColor(value: any) {
-    console.log(value)
-    // setColor(value);
-  }
-
+const GetFormItem = (item: StyleItem, fn?: Function, color?: string) => {
   switch (item.type) {
     case StyleItemType.Number:
       return <Form.Item
+        key={item.style}
         label={item.name}
         name={item.style}
       >
@@ -51,6 +45,7 @@ const getFormItem = (item: StyleItem) => {
       </Form.Item>
     case StyleItemType.Select:
       return <Form.Item
+        key={item.style}
         label={item.name}
         name={item.style}
       >
@@ -63,11 +58,15 @@ const getFormItem = (item: StyleItem) => {
       </Form.Item>
     case StyleItemType.Color:
       return <Form.Item
+        key={item.style}
         label={item.name}
         name={item.style}
       >
-        <div style={{ width: "100%", height: "20px", background: "#e43" }}></div>
-        <SketchPicker className="color-panel" onChange={handleChangeColor} />
+        <div className="color-bg" style={{ width: "100%", height: "20px" }}>
+          <span style={{ background: color, display: "block", height: "90%", width: "100%" }}></span>
+          <SketchPicker className="color-panel" color={color} onChange={fn} />
+
+        </div>
       </Form.Item>
   }
 
@@ -88,7 +87,6 @@ const onPosChange = (a: any) => {
 }
 
 const GetPos = () => {
-  const [color, setColor]  = useState("#aaa")
   return (
     <Form
       name="pos"
@@ -99,11 +97,19 @@ const GetPos = () => {
       initialValues={getinitaPosValues()}
       autoComplete="off"
     >
-      {style.pos.map(item => getFormItem(item))}
+      {style.pos.map(item => GetFormItem(item))}
 
     </Form>);
 }
-export const getfontSet = () => {
+export const GetfontSet = () => {
+  const obj = getinitaFontValues()
+
+  const [color, setColor] = useState(obj.color || "#aaa")
+  const onchange = (a: any) => {
+    setColor(a.hex)
+    console.log(color)
+
+  }
   return (<Form
     name="font"
     onValuesChange={onFontChange}
@@ -113,7 +119,7 @@ export const getfontSet = () => {
     initialValues={getinitaFontValues()}
     autoComplete="off"
   >
-    {style.fonts.map(item => getFormItem(item))}
+    {style.fonts.map(item => GetFormItem(item, onchange, color))}
 
   </Form>);
 }
@@ -131,8 +137,9 @@ export const getStyle = () => {
     </Panel>
 
     <Panel header="字体" key="2">
+      <GetfontSet></GetfontSet>
 
-      {getfontSet()}
+      {/* {getfontSet()} */}
     </Panel>
   </Collapse>
 

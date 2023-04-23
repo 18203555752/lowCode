@@ -1,11 +1,11 @@
 
 import { nanoid } from 'nanoid'
-import { StyleItem, Styles } from './type'
+import { Attrs, StyleItem, Styles } from './type'
 import { ConfigKey, configStyle } from './config'
 
 
-class Style {
 
+class Style {
   private styles!: Styles
   private _top = 0
   private _left = 0
@@ -121,17 +121,32 @@ class Style {
 
 }
 
+class Attr {
+  private attrs!: Attrs
+  constructor() {
+    this.attrs = {
+      publicAttr: [],
+      basicAttr: []
+    }
+  }
+
+}
+
+
+
 
 
 export class ComponentInfo {
   id = nanoid()
   name = ""
   private _style: Style
+  private _attr!: Attr
 
   constructor(name?: string) {
     if (name)
       this.name = name
     this._style = new Style()
+    this._attr = new Attr()
   }
 
   get style() {

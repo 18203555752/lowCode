@@ -5,6 +5,9 @@ import type { TabsProps } from 'antd';
 import { getStyle } from './style/tabStyle';
 import l from  "./index.less"
 import { useState } from 'react';
+//@ts-ignore
+import { SketchPicker } from 'react-color'
+import { getAttr } from './style/attr';
 // console.log(l)
 
 
@@ -19,7 +22,7 @@ const items: TabsProps['items'] = [
   {
     key: '2',
     label: `Tab 2`,
-    children: `Content of Tab Pane 2`,
+    children: getAttr(),
   },
   {
     key: '3',
@@ -33,7 +36,8 @@ const onChange = (key: string) => {
 };
 
 export const RightProperty = () => {
-  // useState()
+
+
   return <div>
     <Tabs className='custom-tab' defaultActiveKey="1" items={items} onChange={onChange}></Tabs>
     </div>
