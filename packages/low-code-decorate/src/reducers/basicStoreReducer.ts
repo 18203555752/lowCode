@@ -43,7 +43,8 @@ function changeComponentPosition(state: BasicStore, payload: any) {
     const curComponent = state.componentData.find((component)=> component.componentName === payload.componentName )
     Object.keys(payload).forEach((item)=> {
         if(item === payload[item].componentName) return
-        curComponent!.instance!.setPosition(item, payload[item])
+        // curComponent!.instance!.style.(item, payload[item])
+
     })
     console.log(state)
     return { ...state }

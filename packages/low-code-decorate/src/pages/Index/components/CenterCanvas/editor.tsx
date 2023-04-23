@@ -32,8 +32,8 @@ const CenterCanvas:FC<Props> = ({name}) => {
       const EditorRectInfo = document.getElementById('editor')!.getBoundingClientRect()
       const x = e.pageX - EditorRectInfo.left
       const y = e.pageY - EditorRectInfo.top
-      instance.setPosition('left', x)
-      instance.setPosition('top', y)
+      // instance.setPosition('left', x)
+      // instance.setPosition('top', y)
       const component = {...listItem, instance}
       console.log(component)
       dispatch({type: 'appendComponent', payload: component})
@@ -51,7 +51,7 @@ const CenterCanvas:FC<Props> = ({name}) => {
             <Shape 
               id={item.instance!.id}
               info={item.instance!}
-              position={item.instance!.position}>
+              position={item.instance!.style.allStyles}>
               <item.component ></item.component>
             </Shape>            
         </Suspense>)}  

@@ -34,6 +34,7 @@ const getinitaFontValues = () => {
 
 
 const getFormItem = (item: StyleItem) => {
+
   // const [color, setColor] = useState("#00ff00");
   function handleChangeColor(value: any) {
     console.log(value)
@@ -57,7 +58,7 @@ const getFormItem = (item: StyleItem) => {
           placeholder="请选择字体"
           allowClear
         >
-          {item.list?.map((_,i) => <Option value={_.val} key={i}>{_.name}</Option>)}
+          {item.list?.map((_, i) => <Option value={_.val} key={i}>{_.name}</Option>)}
         </Select>
       </Form.Item>
     case StyleItemType.Color:
@@ -65,8 +66,8 @@ const getFormItem = (item: StyleItem) => {
         label={item.name}
         name={item.style}
       >
-        <div style={{width:"100%", height:"20px", background:"#e43"}}></div>
-        {/* <SketchPicker className="color-panel" onChange={handleChangeColor} /> */}
+        <div style={{ width: "100%", height: "20px", background: "#e43" }}></div>
+        <SketchPicker className="color-panel" onChange={handleChangeColor} />
       </Form.Item>
   }
 
@@ -86,23 +87,24 @@ const onPosChange = (a: any) => {
   console.log(a)
 }
 
-const GetPos = ()  => {
-  return( 
-  <Form
-    name="pos"
-    labelCol={{ span: 8 }}
-    wrapperCol={{ span: 16 }}
-    style={{ maxWidth: 600 }}
-    onValuesChange={onPosChange}
-    initialValues={getinitaPosValues()}
-    autoComplete="off"
-  >
-    {style.pos.map(item => getFormItem(item))}
+const GetPos = () => {
+  const [color, setColor]  = useState("#aaa")
+  return (
+    <Form
+      name="pos"
+      labelCol={{ span: 8 }}
+      wrapperCol={{ span: 16 }}
+      style={{ maxWidth: 600 }}
+      onValuesChange={onPosChange}
+      initialValues={getinitaPosValues()}
+      autoComplete="off"
+    >
+      {style.pos.map(item => getFormItem(item))}
 
-  </Form>);
+    </Form>);
 }
 export const getfontSet = () => {
-  return( <Form
+  return (<Form
     name="font"
     onValuesChange={onFontChange}
     labelCol={{ span: 9 }}
@@ -124,7 +126,7 @@ export const getStyle = () => {
 
     <Panel header="位置" key="1">
       <GetPos></GetPos>
-    
+
       {/* {GetPos()} */}
     </Panel>
 

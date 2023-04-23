@@ -1,7 +1,8 @@
-import { ComponentInfo, StyleItem } from "@/clazz/style"
+import { ComponentInfo,  } from "@/clazz/style"
 import { basicStoreConText } from "@/contexts/componentList"
 import React, { type FC, Suspense, useContext, JSXElementConstructor, ReactNode, useMemo, useState } from "react"
 import './shape.css'
+import { StyleItem } from "@/clazz/type"
 interface Props {
   id: string
   children: ReactNode

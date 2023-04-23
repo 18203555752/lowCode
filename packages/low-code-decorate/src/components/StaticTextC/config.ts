@@ -7,8 +7,6 @@ class StaticTextComponent extends ComponentInfo {
   constructor() {
     super(componentName)
     this.style.buildStyle(StaticTextComponent.POSITION, StaticTextComponent.FONTS)
-
-
   }
 }
 

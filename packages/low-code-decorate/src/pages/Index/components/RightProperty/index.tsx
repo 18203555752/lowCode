@@ -5,7 +5,7 @@ import type { TabsProps } from 'antd';
 import { getStyle } from './style/tabStyle';
 import l from  "./index.less"
 import { useState } from 'react';
-console.log(l)
+// console.log(l)
 
 
 
