@@ -1,4 +1,4 @@
-import { BaseComponent } from "@/clazz/style"
+import { ComponentInfo } from "@/clazz/style"
 import { Dispatch } from "react"
 
 export interface BasicStore{
@@ -10,7 +10,7 @@ export interface ComponentObj {
   componentName: string,
   component: any
   config: any
-  instance: BaseComponent | null
+  instance: ComponentInfo | null
 }
 
 export interface Action{

@@ -2,7 +2,7 @@ import { basicStoreConText } from "@/contexts/componentList"
 import { type FC, Suspense, useContext } from "react"
 import { componentList } from "@/pages/Index/load"
 import './style/editor.css'
-import { BaseComponent } from "@/clazz/style"
+import { ComponentInfo } from "@/clazz/style"
 import Shape from './shape/shape'
 interface Props {
   name: string
@@ -28,7 +28,7 @@ const CenterCanvas:FC<Props> = ({name}) => {
     // return 
     if (componentName) {
       const listItem = componentList[componentName]
-      const instance: BaseComponent = new listItem.config()
+      const instance: ComponentInfo = new listItem.config()
       const EditorRectInfo = document.getElementById('editor')!.getBoundingClientRect()
       const x = e.pageX - EditorRectInfo.left
       const y = e.pageY - EditorRectInfo.top
