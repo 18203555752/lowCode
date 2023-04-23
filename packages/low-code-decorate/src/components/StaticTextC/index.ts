@@ -7,5 +7,6 @@ import StaticTextComponent, { componentName } from './config'
 export default {
   componentName,
   component: React.lazy( ()=> import('./StaticTextC') ),
-  config: StaticTextComponent
+  config: StaticTextComponent,
+  instance: null
 }

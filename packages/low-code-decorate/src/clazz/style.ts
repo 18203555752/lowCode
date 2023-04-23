@@ -10,14 +10,13 @@ class Style {
   private _top = 0
   private _left = 0
   constructor() {
-
     this.styles = { position: [], fontSet: [] }
   }
   get left() {
-    return this._left
+    return this.styles.position[2]
   }
   get top() {
-    return this._top
+    return this.styles.position[3]
   }
   /**
    * 所有的样式
