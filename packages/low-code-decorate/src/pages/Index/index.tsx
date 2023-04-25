@@ -6,17 +6,17 @@ import { RightProperty } from './components/RightProperty';
 import CenterCanvas  from './components/CenterCanvas/editor';
 import React, { useReducer, useState } from 'react';
 import {componentList} from './load'
-import {basicStoreConText} from '@/contexts/componentList'
-import basicStoreReducer, {initialBasicStore} from '@/reducers/basicStoreReducer'
+import {curComponentConText} from '@/contexts/componentList'
+import curComponentReducer, {initialCurComponent} from '@/reducers/curComponentReducer'
 import { ComponentObj } from '@/types/basicStore';
 console.log(componentList)
 const { Header, Content, Sider } = Layout;
 
 export const Index = () => {
-  const [basicStore, dispatch] = useReducer(basicStoreReducer, initialBasicStore)
+  const [curComponent, dispatch] = useReducer(curComponentReducer, initialCurComponent)
   
   return (
-    <basicStoreConText.Provider value={{basicStore, dispatch}}>
+    <curComponentConText.Provider value={{curComponent, dispatch}}>
       <Layout style={{color: '#fff', height: '100vh'}}>
         <Header style={{background: 'rgb(33, 37, 40)'}}><PageHeader /></Header>
 
@@ -32,6 +32,6 @@ export const Index = () => {
           </Sider>
         </Layout>
       </Layout>
-    </basicStoreConText.Provider>
+    </curComponentConText.Provider>
   )
 }

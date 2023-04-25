@@ -85,7 +85,7 @@ class Style {
    * @returns Style
    */
   setLeftAndTop(left: number, top?: number) {
-    this._top = left;
+    this._left = left;
     if (top) {
       this._top = top
     }
