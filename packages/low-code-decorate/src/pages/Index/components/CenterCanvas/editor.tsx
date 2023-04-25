@@ -1,18 +1,28 @@
-import { basicStoreConText } from "@/contexts/componentList"
-import { type FC, Suspense, useContext } from "react"
+import { type FC, Suspense, useContext, useReducer, useState } from "react"
 import { componentList } from "@/pages/Index/load"
 import './style/editor.css'
 import { ComponentInfo } from "@/clazz/style"
 import Shape from './shape/shape'
+import basicStoreReducer, { initialBasicStore } from "@/reducers/basicStoreReducer"
+import { curComponentConText } from "@/contexts/componentList"
+import React from "react"
 interface Props {
   name: string
 }
 const CenterCanvas:FC<Props> = ({name}) => {
-  const {basicStore, dispatch} = useContext(basicStoreConText)
+  const {curComponent, dispatch: curDispath} = useContext(curComponentConText)
+  const [basicStore, dispatch] = useReducer(basicStoreReducer, initialBasicStore)
+  const [shuldRemove, setShuldRemove] = useState(false)
 
-  const handle = ()=> {
-    
+  const removeCurComponent = (e: React.MouseEvent)=> {
+    if(!shuldRemove) return
+    console.log('删除curComponent', e.currentTarget, e.target)
+    curDispath({type: 'remove', payload: null})
+    setShuldRemove(false)
   }
+  /**
+   * desc 从左侧组件列表拖拽至编辑器区域的事件
+  */
   const handleDragOver = (e: any) => {
     e.preventDefault()
     e.dataTransfer.dropEffect = 'copy'
@@ -21,7 +31,6 @@ const CenterCanvas:FC<Props> = ({name}) => {
    * desc 从左侧组件列表拖拽至编辑器区域动作完成
   */
   const handleDrop = async (e:any) => {
-    // console.log(e)
     e.preventDefault()
     e.stopPropagation()
     const componentName = e.dataTransfer.getData('componentName')
@@ -32,14 +41,17 @@ const CenterCanvas:FC<Props> = ({name}) => {
       const EditorRectInfo = document.getElementById('editor')!.getBoundingClientRect()
       const x = e.pageX - EditorRectInfo.left
       const y = e.pageY - EditorRectInfo.top
-      // instance.setPosition('left', x)
-      // instance.setPosition('top', y)
+      instance.style.setLeftAndTop(x, y)
       const component = {...listItem, instance}
-      console.log(component)
+      console.log(component, x,y)
       dispatch({type: 'appendComponent', payload: component})
     }
   }
-  return <div id="editor" className="editor"  onDrop={handleDrop} onDragOver={handleDragOver}>
+  return <div id="editor" className="editor" 
+    onMouseDown={()=> {setShuldRemove(true)}}
+    onMouseUp={removeCurComponent}
+    onDrop={handleDrop} 
+    onDragOver={handleDragOver}>
       {/* 网格线 */}
       <div className="grid"></div>
       {/* 标尺 */}
@@ -50,8 +62,8 @@ const CenterCanvas:FC<Props> = ({name}) => {
         {basicStore.componentData.map((item, index)=> <Suspense key={item.instance!.id} fallback={<div>Loading...</div>}>
             <Shape 
               id={item.instance!.id}
-              info={item.instance!}
-              position={item.instance!.style.allStyles}>
+              component={item}
+              styles={item.instance!.style.allStyles}>
               <item.component ></item.component>
             </Shape>            
         </Suspense>)}  
