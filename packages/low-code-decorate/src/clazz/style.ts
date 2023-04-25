@@ -1,7 +1,7 @@
 
 import { nanoid } from 'nanoid'
 import { Attrs, StyleItem, Styles } from './type'
-import { ConfigKey, configStyle } from './config'
+import { configAttr, ConfigAttrKey, ConfigKey, configStyle } from './config'
 
 
 
@@ -120,15 +120,46 @@ class Style {
   }
 
 }
-
+/**
+ * 组件的基础属性
+ */
 class Attr {
-  private attrs!: Attrs
+  private _attrs!: Attrs
   constructor() {
-    this.attrs = {
+    this._attrs = {
       publicAttr: [],
       basicAttr: []
     }
   }
+get attrs() {
+  return this._attrs
+}
+
+  get val() {
+    return (this.attrs.basicAttr.find(item => item.style == "input")?.val || "") as string
+  }
+  set val(val: string | number) {
+    const item = this.attrs.basicAttr.find(item => item.style == "input")
+    if (item)
+      item.val = val;
+  }
+  /**
+   * 设置属性
+   * @param basicAttr 基础属性
+   * @param publicAttr 
+   * @returns 
+   */
+  buildAttr(basicAttr: ConfigAttrKey[] = ["input"], publicAttr: ConfigAttrKey[] = []) {
+    basicAttr.forEach(key => {
+      this.attrs.basicAttr.push({ ...configAttr[key] })
+    })
+    publicAttr.forEach(key => {
+      this.attrs.publicAttr.push({ ...configAttr[key] })
+    })
+    return this;
+  }
+
+
 
 }
 
@@ -147,6 +178,9 @@ export class ComponentInfo {
       this.name = name
     this._style = new Style()
     this._attr = new Attr()
+  }
+  get attr() {
+    return this._attr
   }
 
   get style() {

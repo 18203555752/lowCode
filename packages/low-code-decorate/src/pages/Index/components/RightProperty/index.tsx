@@ -21,7 +21,7 @@ const items: TabsProps['items'] = [
   },
   {
     key: '2',
-    label: `Tab 2`,
+    label: `属性`,
     children: getAttr(),
   },
   {

@@ -81,4 +81,6 @@ export const configAttr = {
   },
 }
 
+export type ConfigAttrKey = keyof typeof configAttr
+
 export type ConfigKey = keyof  typeof configStyle
