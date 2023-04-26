@@ -69,7 +69,7 @@ const onChange = (key: string | string[]) => {
 export const getAttr = () => {
   return <Collapse className="style-collapse" defaultActiveKey={['1', '2']} onChange={onChange}>
     <Panel header="基础属性" key="1">
-      {getBasicAttr()}
+      {/* {getBasicAttr()} */}
     </Panel>
   </Collapse>
 }

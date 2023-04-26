@@ -28,7 +28,13 @@ export default (state: ComponentObj|null, action: { type: string, payload: any }
 
 function changeCurComponentStyle(state: ComponentObj, payload: any) {
     console.log(state)
-    state!.instance!.style.setLeftAndTop(payload.left, payload.top)
+    if(payload.type == 'font'){
+    state!.instance!.style.setFont(payload)
+
+    }else{
+    state!.instance!.style.setPos(payload)
+
+    }
     
     return { ...state }
 }

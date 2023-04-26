@@ -38,7 +38,8 @@ function appendComponent(state: BasicStore, payload: any) {
 
 function changeComponentPosition(state: BasicStore, payload: any) {
     const curComponent = state.componentData.find((component)=> component.componentName === payload.componentName )
-    curComponent!.instance!.style.setLeftAndTop(payload.left, payload.top)
+    // curComponent!.instance!.style.setLeftAndTop(payload.left, payload.top)
+    curComponent!.instance!.style.setPos(payload)
     console.log(state)
     return { ...state }
 }

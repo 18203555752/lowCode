@@ -52,6 +52,22 @@ export const configStyle = {
     val: 10,
     unit: "px",
   },
+  "left": {
+    type: StyleItemType.Number,
+    style: "left",
+    name: "左边离",
+    readonly: false,
+    val: 0,
+    unit: "px",
+  },
+  "top": {
+    type: StyleItemType.Number,
+    style: "top",
+    name: "上边距",
+    readonly: false,
+    val: 0,
+    unit: "px",
+  },
   "width": {
     type: StyleItemType.Number,
     style: "width",

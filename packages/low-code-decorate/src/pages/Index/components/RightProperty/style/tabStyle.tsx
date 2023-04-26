@@ -3,9 +3,10 @@ import { Form, Input, Select, Collapse } from "antd"
 //@ts-ignore
 import { SketchPicker } from 'react-color'
 import "../index.less"
-import { ComponentInfo } from "@/clazz/style";
+import { ComponentInfo, Style } from "@/clazz/style";
 import { StyleItem, StyleItemType } from "@/clazz/type";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { curComponentConText } from "@/contexts/componentList";
 const { Option } = Select;
 const { Panel } = Collapse;
 const compoent = new ComponentInfo()
@@ -16,19 +17,21 @@ console.log(style.allStyles)
 
 
 
-const getinitaPosValues = () => {
+const getinitaPosValues = (style: Style | null) => {
   const obj: any = {}
-  style.pos.forEach(item => {
-    obj[item.style] = item.val
-  })
+  if (style)
+    style.pos.forEach(item => {
+      obj[item.style] = item.val
+    })
   return obj
 }
 
-const getinitaFontValues = () => {
+const getinitaFontValues = (style: Style | null) => {
   const obj: any = {}
-  style.fonts.forEach(item => {
-    obj[item.style] = item.val
-  })
+  if (style)
+    style.fonts.forEach(item => {
+      obj[item.style] = item.val
+    })
   return obj
 }
 
@@ -75,53 +78,95 @@ const GetFormItem = (item: StyleItem, fn?: Function, color?: string) => {
 const onChange = (key: string | string[]) => {
   // console.log(key);
 };
-const onFontChange = (a: any) => {
-  const key = Object.keys(a)[0]
-  style.setFont(key, a[key])
-  console.log(a)
-}
-const onPosChange = (a: any) => {
-  const key = Object.keys(a)[0]
-  style.setPos(key, a[key])
-  console.log(a)
-}
+
+
 
 const GetPos = () => {
-  return (
-    <Form
+  const [form] = Form.useForm();
+  const { curComponent, dispatch } = useContext(curComponentConText)
+  const onPosChange = (a: any) => {
+    dispatch({ type: "changeCurComponentStyle", payload: { ...a, type: 'pos' } })
+    // const key = Object.keys(a)[0]
+    // style.setPos(a)
+    // console.log(a)
+  }
+  useEffect(() => {
+    setTimeout(() => {
+      if (curComponent && curComponent.instance?.style) {
+        const o: any = {}
+        curComponent.instance.style.pos.forEach(item => {
+          o[item.style] = item.val
+        })
+        form.setFieldsValue(o)
+      }
+    }, 0)
+  }, [curComponent])
+  return (<div>
+
+    {curComponent ? <Form
+      form={form}
       name="pos"
       labelCol={{ span: 8 }}
       wrapperCol={{ span: 16 }}
       style={{ maxWidth: 600 }}
       onValuesChange={onPosChange}
-      initialValues={getinitaPosValues()}
+      initialValues={getinitaPosValues(curComponent?.instance?.style || null)}
       autoComplete="off"
     >
-      {style.pos.map(item => GetFormItem(item))}
+      {/* {curComponent.instance ? style.pos.map(item => GetFormItem(item))} */}
+      {curComponent.instance?.style.pos.map(item => GetFormItem(item))}
 
-    </Form>);
+    </Form> : null}
+  </div>
+  );
 }
 export const GetfontSet = () => {
-  const obj = getinitaFontValues()
+  const { curComponent, dispatch } = useContext(curComponentConText)
+  const [form] = Form.useForm();
+  const obj = getinitaFontValues(curComponent?.instance?.style || null)
 
   const [color, setColor] = useState(obj.color || "#aaa")
   const onchange = (a: any) => {
     setColor(a.hex)
-    console.log(color)
-
+    // console.log(color)
   }
-  return (<Form
-    name="font"
-    onValuesChange={onFontChange}
-    labelCol={{ span: 9 }}
-    wrapperCol={{ span: 15 }}
-    style={{ maxWidth: 600 }}
-    initialValues={getinitaFontValues()}
-    autoComplete="off"
-  >
-    {style.fonts.map(item => GetFormItem(item, onchange, color))}
+  const onFontChange = (a: any) => {
+    // const key = Object.keys(a)[0]
+    if (a.color) {
+      dispatch({ type: "changeCurComponentStyle", payload: { type: 'font', color: a.color.hex } })
+      // style.setFont({ color: a.color.hex })
 
-  </Form>);
+    } else {
+      dispatch({ type: "changeCurComponentStyle", payload: { ...a, type: 'font' } })
+      // style.setFont(a)
+
+    }
+    // console.log(a)
+  }
+  useEffect(() => {
+    if (curComponent && curComponent.instance?.style) {
+      curComponent.instance.style.fonts.forEach(item => {
+        form.setFieldsValue({ [item.style]: item.val })
+      })
+    }
+    console.log(curComponent)
+  }, [curComponent])
+  return (
+    <div>
+      {curComponent ? <Form
+        name="font"
+        onValuesChange={onFontChange}
+        labelCol={{ span: 9 }}
+        wrapperCol={{ span: 15 }}
+        style={{ maxWidth: 600 }}
+        initialValues={getinitaFontValues(curComponent?.instance?.style || null)}
+        autoComplete="off"
+      >
+        {curComponent.instance?.style.fonts.map(item => GetFormItem(item, onchange, color))}
+
+      </Form> : null}
+    </div>
+  );
 }
 
 

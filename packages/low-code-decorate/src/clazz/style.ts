@@ -3,20 +3,35 @@ import { nanoid } from 'nanoid'
 import { Attrs, StyleItem, Styles } from './type'
 import { configAttr, ConfigAttrKey, ConfigKey, configStyle } from './config'
 
+type StyleObj = {
+  [key in ConfigKey]?: StyleItem
+}
 
-
-class Style {
+export class Style {
   private styles!: Styles
   private _top = 0
   private _left = 0
+
+  private _posObj: StyleObj = {
+
+  }
+  private _fontObj: StyleObj = {
+
+  }
   constructor() {
-    this.styles = { position: [], fontSet: [] }
+    // this.styles = { position: [], fontSet: [] }
   }
+  /**
+   */
   get left() {
-    return this.styles.position[2]
+    return this._posObj.left?.val || 0
   }
+
+    /**
+   * @deprecated
+   */
   get top() {
-    return this.styles.position[3]
+    return this._posObj.top?.val || 0
   }
   /**
    * 所有的样式
@@ -25,14 +40,14 @@ class Style {
    */
   get allStyles() {
     const o: any = {}
-    this.styles.position.forEach(item => {
+    Object.values(this._fontObj).forEach(item => {
       o[item.style] = item.val + "" + (item.unit || "")
     })
-    this.styles.fontSet.forEach(item => {
+    Object.values(this._posObj).forEach(item => {
       o[item.style] = item.val + "" + (item.unit || "")
     })
-    o.left = this._left + 'px'
-    o.top = this._top + 'px'
+    // // o.left = this._left + 'px'
+    // o.top = this._top + 'px'
     return o;
 
 
@@ -43,17 +58,18 @@ class Style {
    * return StyleItem[]
    */
   get pos() {
-    return this.styles.position
+    return Object.values(this._posObj)
   }
   /**
  * 所有和字体相关的信息
  * return StyleItem[]
  */
   get fonts() {
-    return this.styles.fontSet
+    return Object.values(this._fontObj)
   }
 
   /**
+   * @deprecated
    * 查找需要更新的样式
    * @param key 
    * @param styleList 
@@ -71,14 +87,20 @@ class Style {
    */
   buildStyle(position: ConfigKey[] = ["width", "height"], fonts: ConfigKey[] = ["fontSize"]) {
     position.forEach(key => {
-      this.styles.position.push({ ...configStyle[key] })
+      const obj = configStyle[key]
+      if (obj)
+        this._posObj[key] = { ...obj }
     })
     fonts.forEach(key => {
-      this.styles.fontSet.push({ ...configStyle[key] })
+      const obj = configStyle[key]
+      if (obj)
+        this._fontObj[key] = { ...obj }
+      // this.styles.fontSet.push({ ...configStyle[key] })
     })
     return this;
   }
   /**
+   * @deprecated
    * 设置位置的left和top信息绝对或相对定位
    * @param left 
    * @param top 
@@ -98,11 +120,21 @@ class Style {
    * @param val 设置的值
    * @returns  Style
    */
-  setPos(key: string, val: number | string) {
-    const tmp = this.getStyleItemByKey(key, this.styles.position)
-    if (tmp) {
-      tmp.val = val
-    }
+  setPos(obj: any,) {
+    Object.keys(obj).forEach((_key) => {
+      const key = _key as unknown as ConfigKey
+      const tmp = this._posObj[key]
+      if (tmp) {
+        tmp.val = obj[_key] || ""
+      }
+    })
+
+    // Object.keys()
+
+    // const tmp = this.getStyleItemByKey(key, this.styles.position)
+    // if (tmp) {
+    //   tmp.val = val
+    // }
     return this
   }
   /**
@@ -111,11 +143,14 @@ class Style {
    * @param val 设置的值
    * @returns Style
    */
-  setFont(key: string, val: number | string) {
-    const tmp = this.getStyleItemByKey(key, this.styles.fontSet)
-    if (tmp) {
-      tmp.val = val
-    }
+  setFont(obj:any) {
+    Object.keys(obj).forEach((_key) => {
+      const key = _key as unknown as ConfigKey
+      const tmp = this._fontObj[key]
+      if (tmp) {
+        tmp.val = obj[_key] || ""
+      }
+    })
     return this;
   }
 
@@ -131,9 +166,9 @@ class Attr {
       basicAttr: []
     }
   }
-get attrs() {
-  return this._attrs
-}
+  get attrs() {
+    return this._attrs
+  }
 
   get val() {
     return (this.attrs.basicAttr.find(item => item.style == "input")?.val || "") as string
