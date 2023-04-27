@@ -2,20 +2,16 @@
 import { ComponentInfo } from '@/clazz/style';
 import { ComponentObj, BasicStore } from '@/types/basicStore';
 
-export const initialBasicStore = {
-    componentData: [],
-    curComponent: null
-}
+export const initialBasicStore = []
 
 export default (state: BasicStore, action: { type: string, payload: any }) => {
     const { type, payload } = action
     switch (type) {
         case 'appendComponent':
             return appendComponent(state, payload)
-        case 'setCurComponent':
-            return { ...state, curComponent: payload }
-        case 'changeComponentPosition': 
-            return changeComponentPosition(state, payload)
+        case 'refresh':
+            console.log(888)
+            return [ ...state]
             
         default:
             return state
@@ -28,18 +24,5 @@ export default (state: BasicStore, action: { type: string, payload: any }) => {
 */
 function appendComponent(state: BasicStore, payload: any) {
     
-    const componentData: ComponentObj[] = [...state.componentData, payload]
-    return { ...state, componentData }
-}
-
-/**
- *  desc 改变curComponent的 位置宽高等信息 positionStyle 
- */ 
-
-function changeComponentPosition(state: BasicStore, payload: any) {
-    const curComponent = state.componentData.find((component)=> component.componentName === payload.componentName )
-    // curComponent!.instance!.style.setLeftAndTop(payload.left, payload.top)
-    curComponent!.instance!.style.setPos(payload)
-    console.log(state)
-    return { ...state }
+    return [ ...state, payload ]
 }

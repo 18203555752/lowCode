@@ -1,10 +1,7 @@
 import { ComponentInfo } from "@/clazz/style"
 import { Dispatch } from "react"
 
-export interface BasicStore{
-  componentData: ComponentObj[]
-  curComponent: ComponentObj | null
-}
+export type BasicStore = ComponentObj[]
 
 export interface ComponentObj {
   componentName: string,
