@@ -1,5 +1,5 @@
 import { curComponentConText } from "@/contexts/componentList"
-import React, { type FC, Suspense, useContext, JSXElementConstructor, ReactNode, useMemo, useState } from "react"
+import React, { type FC, Suspense, useContext, JSXElementConstructor, ReactNode, useMemo, useState, useEffect } from "react"
 import './shape.less'
 import { StyleItem } from "@/clazz/type"
 import { ComponentObj } from "@/types/basicStore"
@@ -25,12 +25,19 @@ const CenterCanvas:FC<Props> = ({id, children, styles, component}) => {
     }
     return ''
   }, [curComponent])
+  useEffect(()=> {
+    if(curComponent && curComponent.instance!.id === component.instance!.id) {
+      console.log(styles)
+      // debugger
+      setStyle(styles)
+    }
+  }, [curComponent])
   /**
    * desc鼠标拖拽事件
   */
   const handleDragendShape = (e: React.MouseEvent<HTMLDivElement, MouseEvent>)=> {
     e.stopPropagation()
-    console.log(curComponent, component.instance!.id)
+    // console.log(curComponent, component.instance!.id)
     if(!curComponent || curComponent.instance!.id !== component.instance!.id) return console.log('此组件不是当前活跃组件！')
 
     const startX = e.clientX
@@ -73,6 +80,7 @@ const CenterCanvas:FC<Props> = ({id, children, styles, component}) => {
   const setCurComponent = (e: React.MouseEvent)=> {
     e.stopPropagation()
     e.preventDefault()
+    if(curComponent && curComponent.instance!.id === component.instance!.id) return
     dispatch({type: 'setCurComponent', payload: {component}})
   }
 

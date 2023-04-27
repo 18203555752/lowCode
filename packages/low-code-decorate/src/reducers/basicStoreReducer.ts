@@ -10,7 +10,6 @@ export default (state: BasicStore, action: { type: string, payload: any }) => {
         case 'appendComponent':
             return appendComponent(state, payload)
         case 'refresh':
-            console.log(888)
             return [ ...state]
             
         default:

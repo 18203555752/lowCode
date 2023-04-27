@@ -20,10 +20,10 @@ const CenterCanvas:FC<Props> = ({name}) => {
     curDispath({type: 'remove', payload: null})
     setShuldRemove(false)
   }
-  useEffect(()=> {
-    console.log('curComponent变了！')
-    dispatch({type: 'refresh', payload: 'refresh'})
-  }, [curComponent])
+  // useEffect(()=> {
+  //   console.log('curComponent变了！')
+  //   dispatch({type: 'refresh', payload: 'refresh'})
+  // }, [curComponent])
   /**
    * desc 从左侧组件列表拖拽至编辑器区域的事件
   */
