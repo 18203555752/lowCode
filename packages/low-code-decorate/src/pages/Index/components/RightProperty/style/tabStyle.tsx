@@ -91,7 +91,6 @@ const GetPos = () => {
     // console.log(a)
   }
   useEffect(() => {
-    setTimeout(() => {
       if (curComponent && curComponent.instance?.style) {
         const o: any = {}
         curComponent.instance.style.pos.forEach(item => {
@@ -99,7 +98,6 @@ const GetPos = () => {
         })
         form.setFieldsValue(o)
       }
-    }, 0)
   }, [curComponent])
   return (<div>
 
@@ -128,11 +126,14 @@ export const GetfontSet = () => {
   const [color, setColor] = useState(obj.color || "#aaa")
   const onchange = (a: any) => {
     setColor(a.hex)
-    // console.log(color)
+    dispatch({ type: "changeCurComponentStyle", payload: { type: 'font', color: a.hex } })
+    console.log(a)
   }
   const onFontChange = (a: any) => {
+    console.log(a)
     // const key = Object.keys(a)[0]
     if (a.color) {
+      console.log(a.color.hex)
       dispatch({ type: "changeCurComponentStyle", payload: { type: 'font', color: a.color.hex } })
       // style.setFont({ color: a.color.hex })
 
