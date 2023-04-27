@@ -26,7 +26,7 @@ export const configStyle = {
     style: "color",
     name: "颜色",
     readonly: false,
-    val: "#333",
+    val: "#e43",
   },
   "marginLeft": {
     type: StyleItemType.Number,
