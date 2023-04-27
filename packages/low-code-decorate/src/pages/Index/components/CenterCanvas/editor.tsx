@@ -1,4 +1,4 @@
-import { type FC, Suspense, useContext, useReducer, useState } from "react"
+import { type FC, Suspense, useContext, useReducer, useState, useEffect } from "react"
 import { componentList } from "@/pages/Index/load"
 import './style/editor.css'
 import { ComponentInfo } from "@/clazz/style"
@@ -20,6 +20,10 @@ const CenterCanvas:FC<Props> = ({name}) => {
     curDispath({type: 'remove', payload: null})
     setShuldRemove(false)
   }
+  useEffect(()=> {
+    console.log('curComponent变了！')
+    dispatch({type: 'refresh', payload: 'refresh'})
+  }, [curComponent])
   /**
    * desc 从左侧组件列表拖拽至编辑器区域的事件
   */
@@ -41,7 +45,7 @@ const CenterCanvas:FC<Props> = ({name}) => {
       const EditorRectInfo = document.getElementById('editor')!.getBoundingClientRect()
       const x = e.pageX - EditorRectInfo.left
       const y = e.pageY - EditorRectInfo.top
-      instance.style.setLeftAndTop(x, y)
+      instance.style.setPos({left: x, top: y})
       const component = {...listItem, instance}
       console.log(component, x,y)
       dispatch({type: 'appendComponent', payload: component})
@@ -59,7 +63,7 @@ const CenterCanvas:FC<Props> = ({name}) => {
 
       {/* 操作台组件列表 */}
       <div className="componentsList">
-        {basicStore.componentData.map((item, index)=> <Suspense key={item.instance!.id} fallback={<div>Loading...</div>}>
+        {basicStore.map((item, index)=> <Suspense key={item.instance!.id} fallback={<div>Loading...</div>}>
             <Shape 
               id={item.instance!.id}
               component={item}
