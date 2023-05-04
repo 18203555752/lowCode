@@ -1,54 +1,37 @@
-import { ComponentInfo } from "@/clazz/style";
+import { ComponentInfo, Attr } from "@/clazz/style";
 import { StyleItem, StyleItemType } from "@/clazz/type";
-import { Collapse, Form, Input, Select } from "antd";
-const compoent = new ComponentInfo()
-const attr = compoent.attr
-const { Option } = Select;
+import { curComponentConText } from "@/contexts/componentList";
+import { ComponentObj } from "@/types/basicStore";
+import { Collapse, Form, Input, InputNumber, Select } from "antd";
+import { useContext, useEffect } from "react";
+import { getFormItem } from "../item/items";
+
 const { Panel } = Collapse;
-attr.buildAttr(["input",])
-console.log(compoent)
-const onChangeBasic = () => {
 
-}
 
-const getFormItem = (item: StyleItem, fn?: Function, color?: string) => {
-  switch (item.type) {
-    case StyleItemType.Number:
-      return <Form.Item
-        key={item.style}
-        label={item.name}
-        name={item.style}
-      >
-        <Input />
-      </Form.Item>
-    case StyleItemType.Select:
-      return <Form.Item
-        key={item.style}
-        label={item.name}
-        name={item.style}
-      >
-        <Select
-          placeholder="请选择字体"
-          allowClear
-        >
-          {item.list?.map((_, i) => <Option value={_.val} key={i}>{_.name}</Option>)}
-        </Select>
-      </Form.Item>
-
-  }
-
-}
-
-const getinitaBasicValues = () => {
+const getinitaBasicValues = (o:any) => {
   const obj: any = {}
-  attr.attrs.basicAttr.forEach(item => {
+  Object.values(o || {}).forEach((item:any) => {
     obj[item.style] = item.val
   })
   return obj
 }
-
-
-const getBasicAttr = () => {
+/**
+ *基础属性组件
+ * @returns 
+ */
+const GetBasicAttr = () => {
+  const { curComponent, dispatch } = useContext(curComponentConText)
+  const [form] = Form.useForm();
+  const onChangeBasic = (a: any) => {
+    dispatch({ type: "changeCurComponentAttr", payload: { type: "_basicAttr", ...a } })
+  }
+  useEffect(() => {
+    if (curComponent && curComponent.instance?.attr) {
+      const o = getinitaBasicValues(curComponent.instance.attr)
+      form.setFieldsValue(o)
+    }
+  }, [curComponent])
   return (
     <Form
       name="basicAttr"
@@ -56,20 +39,66 @@ const getBasicAttr = () => {
       wrapperCol={{ span: 16 }}
       style={{ maxWidth: 600 }}
       onValuesChange={onChangeBasic}
-      initialValues={getinitaBasicValues()}
+      initialValues={getinitaBasicValues(curComponent?.instance?.attr.basicAttr)}
       autoComplete="off"
     >
-      {attr.attrs.basicAttr.map(item => getFormItem(item))}
+      {Object.values(curComponent?.instance?.attr?.basicAttr || {}).map(item => getFormItem(item))}
 
     </Form>);
 }
 const onChange = (key: string | string[]) => {
   // console.log(key);
 };
-export const getAttr = () => {
-  return <Collapse className="style-collapse" defaultActiveKey={['1', '2']} onChange={onChange}>
-    <Panel header="基础属性" key="1">
-      {/* {getBasicAttr()} */}
-    </Panel>
-  </Collapse>
+/**
+ *基础属性组件
+ * @returns 
+ */
+const GetPublicAttr = () => {
+  const { curComponent, dispatch } = useContext(curComponentConText)
+  const [form] = Form.useForm();
+  const onChangeBasic = (a: any) => {
+    dispatch({ type: "changeCurComponentAttr", payload: { type: "_publicAttr", ...a } })
+  }
+  useEffect(() => {
+    if (curComponent && curComponent.instance?.attr) {
+      const o = getinitaBasicValues(curComponent.instance.attr)
+      form.setFieldsValue(o)
+    }
+  }, [curComponent])
+  return (
+    <Form
+      name="publicAttr"
+      labelCol={{ span: 8 }}
+      wrapperCol={{ span: 16 }}
+      style={{ maxWidth: 600 }}
+      onValuesChange={onChangeBasic}
+      initialValues={getinitaBasicValues(curComponent?.instance?.attr.publicAttr)}
+      autoComplete="off"
+    >
+      {Object.values(curComponent?.instance?.attr?.publicAttr || {}).map(item => getFormItem(item))}
+
+    </Form>);
+}
+
+
+export const getAttr = (curComponent: ComponentObj | null, dispatch: Function) => {
+
+  return (<>
+    {curComponent ? <Collapse className="style-collapse" defaultActiveKey={['1', '2']} onChange={onChange}>
+      {
+        curComponent.instance?.attr.hasPulicAttr ? < Panel header="公共属性" key="2" >
+          <GetPublicAttr></GetPublicAttr>
+        </Panel > : null
+      }
+      {
+        curComponent.instance?.attr.hasBasicAttr ? < Panel header="基础属性" key="1" >
+          <GetBasicAttr></GetBasicAttr>
+        </Panel > : null
+      }
+
+
+    </Collapse > : null}
+  </>)
+
+
 }

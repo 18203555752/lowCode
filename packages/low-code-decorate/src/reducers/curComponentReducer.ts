@@ -2,21 +2,22 @@ import { ComponentObj } from '@/types/basicStore';
 
 export const initialCurComponent = null
 
-export default (state: ComponentObj|null, action: { type: string, payload: any }) => {
+export default (state: ComponentObj | null, action: { type: string, payload: any }) => {
     const { type, payload } = action
     switch (type) {
         case 'setCurComponent':
             return payload.component;
 
-        case 'remove': 
+        case 'remove':
             return payload;
-
-        case 'changeCurComponentStyle': 
+        case 'changeCurComponentStyle':
             return changeCurComponentStyle(state!, payload);
+        case 'changeCurComponentAttr':
+            return changeCurComponentAttr(state!, payload);
 
-        case 'changeCurComponentProps': 
+        case 'changeCurComponentProps':
             return changeCurComponentProps(state!, payload);
-            
+
         default:
             return state
     }
@@ -24,18 +25,36 @@ export default (state: ComponentObj|null, action: { type: string, payload: any }
 
 /**
  *  desc 改变curComponent的 位置宽高等信息 positionStyle 
- */ 
+ */
 
 function changeCurComponentStyle(state: ComponentObj, payload: any) {
     console.log(state)
-    if(payload.type == 'font'){
-    state!.instance!.style.setFont(payload)
+    if (payload.type == 'font') {
+        state!.instance!.style.setFont(payload)
 
-    }else{
-    state!.instance!.style.setPos(payload)
+    } else {
+        state!.instance!.style.setPos(payload)
 
     }
-    
+
+    return { ...state }
+}
+
+/**
+ *  desc 改变curComponent的 位置宽高等信息 positionStyle 
+ */
+
+function changeCurComponentAttr(state: ComponentObj, payload: any) {
+    state.instance?.attr.setAttr(payload.type, payload)
+    // console.log(state)
+    // if (payload.type == 'font') {
+    //     state!.instance!.attr.setAttr(payload)
+
+    // } else {
+    //     state!.instance!.style.setPos(payload)
+
+    // }
+
     return { ...state }
 }
 

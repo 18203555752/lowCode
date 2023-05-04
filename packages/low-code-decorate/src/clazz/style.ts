@@ -27,9 +27,9 @@ export class Style {
     return this._posObj.left?.val || 0
   }
 
-    /**
-   * @deprecated
-   */
+  /**
+ * @deprecated
+ */
   get top() {
     return this._posObj.top?.val || 0
   }
@@ -143,7 +143,7 @@ export class Style {
    * @param val 设置的值
    * @returns Style
    */
-  setFont(obj:any) {
+  setFont(obj: any) {
     Object.keys(obj).forEach((_key) => {
       const key = _key as unknown as ConfigKey
       const tmp = this._fontObj[key]
@@ -155,48 +155,91 @@ export class Style {
   }
 
 }
+type AttrObj = {
+  [key in ConfigAttrKey]?: StyleItem
+}
+
 /**
  * 组件的基础属性
  */
-class Attr {
-  private _attrs!: Attrs
+export class Attr {
+  private _publicAttr: AttrObj = {}
+  private _basicAttr: AttrObj = {}
   constructor() {
-    this._attrs = {
-      publicAttr: [],
-      basicAttr: []
-    }
-  }
-  get attrs() {
-    return this._attrs
+    // this._basicAttr = {}
   }
 
-  get val() {
-    return (this.attrs.basicAttr.find(item => item.style == "input")?.val || "") as string
+  get basicAttr() {
+    return this._basicAttr
   }
-  set val(val: string | number) {
-    const item = this.attrs.basicAttr.find(item => item.style == "input")
-    if (item)
-      item.val = val;
+
+  get publicAttr() {
+    return this._publicAttr
   }
+
+  get hasBasicAttr() {
+    return Object.keys(this._basicAttr).length
+  }
+  get hasPulicAttr() {
+    return Object.keys(this._publicAttr).length
+  }
+  // get attrs() {
+  //   return this._attrs
+  // }
+
+  // get val() {
+  //   return (this.attrs.basicAttr.find(item => item.style == "input")?.val || "") as string
+  // }
+  // set val(val: string | number) {
+  //   const item = this.attrs.basicAttr.find(item => item.style == "input")
+  //   if (item)
+  //     item.val = val;
+  // }
   /**
    * 设置属性
    * @param basicAttr 基础属性
    * @param publicAttr 
    * @returns 
    */
-  buildAttr(basicAttr: ConfigAttrKey[] = ["input"], publicAttr: ConfigAttrKey[] = []) {
+  buildAttr(basicAttr: ConfigAttrKey[] = ["input"], type: string) {
     basicAttr.forEach(key => {
-      this.attrs.basicAttr.push({ ...configAttr[key] })
+      //@ts-ignore
+      if (!this[type]) {
+        //@ts-ignore
+        this[type] = {}
+
+      }
+      //@ts-ignore
+      this[type][key] = { ...configAttr[key] }
+      // this.attrs.basicAttr.push({ ...configAttr[key] })
     })
-    publicAttr.forEach(key => {
-      this.attrs.publicAttr.push({ ...configAttr[key] })
-    })
+    // publicAttr.forEach(key => {
+    //   this.attrs.publicAttr.push({ ...configAttr[key] })
+    // })
     return this;
+  }
+  /**
+   * 设置属性
+   * @param type 
+   * @param attrObj 
+   */
+  setAttr(type: string, attrObj: any) {
+    //@ts-ignore
+    if (this[type]) {
+      for (let key in attrObj) {
+        //@ts-ignore
+        if (this[type][key]) {
+          //@ts-ignore
+          this[type][key].val = attrObj[key]
+        }
+
+      }
+    }
   }
 
 
-
 }
+
 
 
 

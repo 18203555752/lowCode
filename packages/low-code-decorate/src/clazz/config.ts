@@ -77,7 +77,7 @@ export const configStyle = {
     unit: "px",
   },
   "height": {
-    type:StyleItemType.Number,
+    type: StyleItemType.Number,
     style: "height",
     name: "高度",
     readonly: false,
@@ -89,14 +89,46 @@ export const configStyle = {
 
 export const configAttr = {
   'input': {
-    type: StyleItemType.Number,
+    type: StyleItemType.TXT,
     style: "input",
     name: "内容",
     readonly: false,
     val: "",
   },
+  'name': {
+    type: StyleItemType.TXT,
+    style: "name",
+    name: "名称",
+    readonly: true,
+    val: "",
+  },
+  'component': {
+    type: StyleItemType.TXT,
+    style: "component",
+    name: "组件",
+    readonly: true,
+    val: "",
+  },
+  'id': {
+    type: StyleItemType.TXT,
+    style: "id",
+    name: "ID",
+    readonly: true,
+    val: "",
+  },
+  'selectTxt': {
+    type: StyleItemType.Select,
+    style: "selectTxt",
+    name: "文本类型",
+    readonly: false,
+    list: [
+      { name: "文本", val: "txt" },
+      { name: "符号", val: "symbol" },
+    ],
+    val: "txt",
+  },
 }
 
 export type ConfigAttrKey = keyof typeof configAttr
 
-export type ConfigKey = keyof  typeof configStyle
+export type ConfigKey = keyof typeof configStyle

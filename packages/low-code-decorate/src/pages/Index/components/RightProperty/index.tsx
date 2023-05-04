@@ -13,24 +13,6 @@ import { curComponentConText } from '@/contexts/componentList';
 
 
 
-const items: TabsProps['items'] = [
-  {
-    key: '1',
-    label: `样式`,
-
-    children: getStyle(),
-  },
-  {
-    key: '2',
-    label: `属性`,
-    children: getAttr(),
-  },
-  {
-    key: '3',
-    label: `Tab 3`,
-    children: `Content of Tab Pane 3`,
-  },
-];
 
 const onChange = (key: string) => {
   console.log(key);
@@ -39,6 +21,24 @@ const onChange = (key: string) => {
 export const RightProperty = () => {
   const { curComponent, dispatch } = useContext(curComponentConText)
 
+  const items: TabsProps['items'] = [
+    {
+      key: '1',
+      label: `样式`,
+
+      children: getStyle(),
+    },
+    {
+      key: '2',
+      label: `属性`,
+      children: getAttr(curComponent,dispatch ),
+    },
+    {
+      key: '3',
+      label: `Tab 3`,
+      children: `Content of Tab Pane 3`,
+    },
+  ];
 
   return <div>
     {
