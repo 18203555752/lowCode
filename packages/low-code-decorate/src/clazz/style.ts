@@ -28,7 +28,7 @@ export class Style {
   }
 
     /**
-   * 
+   * @deprecated
    */
   get top() {
     return this._posObj.top?.val || 0
@@ -54,6 +54,23 @@ export class Style {
   }
 
   /**
+   * 保存样式值
+   */
+  get values() {
+    const o: any = {
+      font: {},
+      pos: {}
+    }
+    Object.values(this._fontObj).forEach(item => {
+      o.font[item.style] = item.val
+    })
+    Object.values(this._posObj).forEach(item => {
+      o.pos[item.style] = item.val
+    })
+    return o;
+  }
+
+  /**
    * 所有和位置相关的信息
    * return StyleItem[]
    */
@@ -67,16 +84,19 @@ export class Style {
   get fonts() {
     return Object.values(this._fontObj)
   }
-
   /**
-   * @deprecated
-   * 查找需要更新的样式
-   * @param key 
-   * @param styleList 
-   * @returns 
+   * 通过对象初始化值
+   * @param el: obj {font:{fontSize:16}, pos:{left:14}} 
    */
-  private getStyleItemByKey(key: string, styleList: StyleItem[]): StyleItem | undefined {
-    return styleList.find(item => item.style === key)
+  initStyle(obj: any) {
+    Object.keys(obj).forEach(key => {
+      if (key == 'font') {
+        this.setFont(obj.font)
+      } else if (key == 'pos') {
+        this.setPos(obj.pos)
+      }
+    })
+
   }
 
   /**
@@ -100,21 +120,6 @@ export class Style {
     return this;
   }
   /**
-   * @deprecated
-   * 设置位置的left和top信息绝对或相对定位
-   * @param left 
-   * @param top 
-   * @returns Style
-   */
-  setLeftAndTop(left: number, top?: number) {
-    this._left = left;
-    if (top) {
-      this._top = top
-    }
-    return this
-  }
-
-  /**
    * 设置位置信息
    * @param key 样式的名字
    * @param val 设置的值
@@ -129,12 +134,7 @@ export class Style {
       }
     })
 
-    // Object.keys()
 
-    // const tmp = this.getStyleItemByKey(key, this.styles.position)
-    // if (tmp) {
-    //   tmp.val = val
-    // }
     return this
   }
   /**
@@ -143,7 +143,7 @@ export class Style {
    * @param val 设置的值
    * @returns Style
    */
-  setFont(obj:any) {
+  setFont(obj: any) {
     Object.keys(obj).forEach((_key) => {
       const key = _key as unknown as ConfigKey
       const tmp = this._fontObj[key]
@@ -154,49 +154,126 @@ export class Style {
     return this;
   }
 
+
+
+
+
+
 }
+type AttrObj = {
+  [key in ConfigAttrKey]?: StyleItem
+}
+type AttrClz = "_publicAttr" | "_basicAttr" | "_dataAttr" | "_labelAttr" | "_axisAttr"
+
 /**
  * 组件的基础属性
  */
-class Attr {
-  private _attrs!: Attrs
+export class Attr {
+  private _publicAttr: AttrObj = {} // 公共属性
+  private _basicAttr: AttrObj = {} // 基础属性
+  private _dataAttr: AttrObj = {} // 数据配置
+  private _labelAttr: AttrObj = {} // 数据配置
+  private _axisAttr: AttrObj = {} // 数据配置
   constructor() {
-    this._attrs = {
-      publicAttr: [],
-      basicAttr: []
-    }
   }
-  get attrs() {
-    return this._attrs
+  /**
+   * 获得属性数据
+   * @param type 
+   * @returns 
+   */
+  getAttr(type: AttrClz) {
+    return JSON.parse(JSON.stringify(this[type])) as AttrObj
   }
 
-  get val() {
-    return (this.attrs.basicAttr.find(item => item.style == "input")?.val || "") as string
+  // get publicAttr() {
+  //   return this._publicAttr
+  // }
+
+  hasAttr(type: AttrClz) {
+    return Object.keys(this[type]).length
   }
-  set val(val: string | number) {
-    const item = this.attrs.basicAttr.find(item => item.style == "input")
-    if (item)
-      item.val = val;
+
+
+  /**
+ * 保存样式值
+ */
+  get attrs() {
+    const o: any = {
+      _publicAttr: {},
+      _basicAttr: {},
+      _dataAttr: {},
+      _labelAttr: {},
+      _axisAttr: {},
+
+    }
+    Object.keys(o).forEach(key => {
+      const tmp = key as AttrClz
+      this.setVal(this[tmp], o[key])
+
+    })
+    // this.setVal(this._publicAttr, o._publicAttr)
+    return o;
   }
+
+  private setVal(src: any, des: any) {
+    Object.keys(src).forEach(key => {
+      des[key] = src[key].val
+    })
+  }
+  /**
+   * 初始化值
+   * @param obj  { _publicAttr:{name:'静态文本'}}
+   */
+  initAttr(obj: any) {
+    Object.keys(obj).forEach(key => {
+      const tmp = key as AttrClz
+      this.setAttr(tmp, obj[key])
+    })
+  }
+
   /**
    * 设置属性
    * @param basicAttr 基础属性
    * @param publicAttr 
    * @returns 
    */
-  buildAttr(basicAttr: ConfigAttrKey[] = ["input"], publicAttr: ConfigAttrKey[] = []) {
+  buildAttr(basicAttr: ConfigAttrKey[] = ["input"], type: string) {
     basicAttr.forEach(key => {
-      this.attrs.basicAttr.push({ ...configAttr[key] })
+      //@ts-ignore
+      if (!this[type]) {
+        //@ts-ignore
+        this[type] = {}
+
+      }
+      //@ts-ignore
+      this[type][key] = { ...configAttr[key] }
+      // this.attrs.basicAttr.push({ ...configAttr[key] })
     })
-    publicAttr.forEach(key => {
-      this.attrs.publicAttr.push({ ...configAttr[key] })
-    })
+    // publicAttr.forEach(key => {
+    //   this.attrs.publicAttr.push({ ...configAttr[key] })
+    // })
     return this;
+  }
+  /**
+   * 设置属性
+   * @param type 
+   * @param attrObj 
+   */
+  setAttr(type: AttrClz, attrObj: any) {
+    if (this[type]) {
+      for (let key in attrObj) {
+        let tmp = key as ConfigAttrKey
+        if (this[type][tmp]) {
+          this[type][tmp]!.val = attrObj[tmp]
+        }
+
+      }
+    }
   }
 
 
-
 }
+
 
 
 
