@@ -28,7 +28,7 @@ export class Style {
   }
 
     /**
-   * @deprecated
+   * 
    */
   get top() {
     return this._posObj.top?.val || 0
