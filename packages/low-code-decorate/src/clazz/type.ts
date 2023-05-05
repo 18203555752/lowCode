@@ -7,6 +7,8 @@ export enum StyleItemType {
   Select = 'select',
   Color = 'color',
   TXT = 'txt',
+  Switch = 'switch',
+
 }
 // Option 类型，表示 select 类型的 StyleItem 的选项
 export interface Option {

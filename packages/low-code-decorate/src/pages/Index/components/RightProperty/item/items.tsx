@@ -1,9 +1,10 @@
 import { StyleItem, StyleItemType } from "@/clazz/type"
-import { Form, Input, InputNumber, Select } from "antd"
+import { Form, Input, InputNumber, Select, Switch } from "antd"
 import { Color } from "./Color";
 const { Option } = Select;
 
-export const getFormItem = (item: StyleItem, fn?: Function, color?: string) => {
+export const getFormItem = (item: StyleItem, i = 0) => {
+
   switch (item.type) {
     case StyleItemType.Number:
       return <Form.Item
@@ -11,7 +12,9 @@ export const getFormItem = (item: StyleItem, fn?: Function, color?: string) => {
         label={item.name}
         name={item.style}
       >
-        <InputNumber addonAfter={item.unit}/>
+        {item.unit ? <InputNumber addonAfter={item.unit} /> : <InputNumber style={{ width: "100%" }} />}
+
+
       </Form.Item>
     case StyleItemType.TXT:
       return <Form.Item
@@ -20,6 +23,15 @@ export const getFormItem = (item: StyleItem, fn?: Function, color?: string) => {
         name={item.style}
       >
         <Input readOnly={item.readonly} />
+      </Form.Item>
+    case StyleItemType.Switch:
+      return <Form.Item
+        key={item.style}
+        label={item.name}
+        name={item.style}
+      >
+        <Switch />
+
       </Form.Item>
     case StyleItemType.Select:
       return <Form.Item
@@ -40,6 +52,7 @@ export const getFormItem = (item: StyleItem, fn?: Function, color?: string) => {
         key={item.style}
         label={item.name}
         name={item.style}
+        style={{ position: "relative", "zIndex": 100 - i }}
       >
         <Color color={item.val as string}></Color>
 
