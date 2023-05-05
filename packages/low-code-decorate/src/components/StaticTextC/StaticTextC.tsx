@@ -1,12 +1,12 @@
 import { FC } from 'react';
 import './index.less';
 
-// interface Props {
-//   id: string
-// }
+interface Props {
+  basic: any
+}
 
-const Map:FC<{id: string}> = (props) => {
-  const { id } = props
-  return <div className='mapCons'>静态文本</div>
+const Map:FC<Props> = (props) => {
+  const { basic } = props
+  return <div className='mapCons'>{basic.input}</div>
 }
 export default Map

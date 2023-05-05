@@ -68,7 +68,7 @@ const CenterCanvas:FC<Props> = ({name}) => {
               id={item.instance!.id}
               component={item}
               styles={item.instance!.style.allStyles}>
-              <item.component ></item.component>
+              <item.component basic={item.instance!.attr.attrs._basicAttr}></item.component>
             </Shape>            
         </Suspense>)}  
       </div>
