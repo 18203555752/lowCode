@@ -5,8 +5,8 @@ interface Props {
   basic: any
 }
 
-const Map:FC<Props> = (props) => {
+const DateText:FC<Props> = (props) => {
   const { basic } = props
-  return <div className='mapCons'>{basic.input}</div>
+  return <div >{basic.input}</div>
 }
-export default Map
+export default DateText

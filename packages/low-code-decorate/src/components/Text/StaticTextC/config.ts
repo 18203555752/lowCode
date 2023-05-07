@@ -1,6 +1,7 @@
 import { ConfigAttrKey, ConfigKey } from "@/clazz/config"
 import { ComponentInfo } from "@/clazz/style"
 export const componentName = 'StaticText'
+export const nickName = '静态文本'
 class StaticTextComponent extends ComponentInfo {
   static POSITION: ConfigKey[] = ["width", "height", "top", "left"]
   static FONTS: ConfigKey[] = ["fontSize", "fontWeight", "color"]
