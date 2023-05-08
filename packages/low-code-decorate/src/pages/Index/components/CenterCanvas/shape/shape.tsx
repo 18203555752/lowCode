@@ -3,6 +3,7 @@ import React, { type FC, Suspense, useContext, JSXElementConstructor, ReactNode,
 import './shape.less'
 import { StyleItem } from "@/clazz/type"
 import { ComponentObj } from "@/types/basicStore"
+import { throttle } from "@/utils/throttle"
 interface Props {
   id: string
   children: ReactNode
@@ -17,7 +18,7 @@ interface Style{
   top: string
 }
 const CenterCanvas:FC<Props> = ({id, children, styles, component, setExitGrid}) => {
-  console.log(`${component.componentName}->shape组件render`)
+  // console.log(`${component.componentName}->shape组件render`)
   const {curComponent, dispatch} = useContext(curComponentConText)
   const [style, setStyle] = useState(styles)
   const [display, setDispaly] = useState<boolean>(false)
@@ -34,9 +35,9 @@ const CenterCanvas:FC<Props> = ({id, children, styles, component, setExitGrid}) 
   }, [isCurrent, display])
   useEffect(()=> {
     console.log('curComponent改变了！', curComponent)
-    if(curComponent && curComponent.instance!.id === component.instance!.id) {
-      setStyle(styles)
-    }
+    // if(curComponent && curComponent.instance!.id === component.instance!.id) {
+    //   setStyle(styles)
+    // }
   }, [curComponent])
   /**
    * desc鼠标拖拽事件
@@ -54,9 +55,10 @@ const CenterCanvas:FC<Props> = ({id, children, styles, component, setExitGrid}) 
     /**
      * desc 添加document对象的mousemove事件，用来实现拖拽效果
      * */ 
-    const move = (e: MouseEvent)=> {
+    const move = throttle((e: MouseEvent)=> {
       const left = e.clientX - startX + parseInt(styleResource.left as string) + 'px'
       const top = e.clientY - startY + parseInt(styleResource.top as string) + 'px'
+      console.log(left, top)
       styleRef.current = {
         ...style,
         left,
@@ -64,7 +66,7 @@ const CenterCanvas:FC<Props> = ({id, children, styles, component, setExitGrid}) 
       }
       setStyle(styleRef.current)
       isDrag = true
-    }
+    })
 
     /**
      *desc 添加document对象的mouseup事件，并在触发后解绑这些事件 ：mousemove、mouseup
