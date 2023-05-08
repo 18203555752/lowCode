@@ -49,9 +49,8 @@ const GetPos = () => {
   const [form] = Form.useForm();
   const { curComponent, dispatch } = useContext(curComponentConText)
   const onPosChange = (a: any) => {
-    console.log(a)
     dispatch({ type: "changeCurComponentStyle", payload: { ...a, type: 'pos' } })
-  
+
   }
   useEffect(() => {
     if (curComponent && curComponent.instance?.style) {
@@ -85,19 +84,24 @@ export const GetfontSet = () => {
   const { curComponent, dispatch } = useContext(curComponentConText)
   const [form] = Form.useForm();
   const onFontChange = (a: any) => {
+    console.log(555)
     dispatch({ type: "changeCurComponentStyle", payload: { ...a, type: 'font' } })
-  
+
   }
   useEffect(() => {
     if (curComponent && curComponent.instance?.style) {
+      const o: any = {}
       curComponent.instance.style.fonts.forEach(item => {
-        form.setFieldsValue({ [item.style]: item.val })
+        o[item.style] = item.val
+
       })
+      form.setFieldsValue(o)
     }
   }, [curComponent])
   return (
     <div>
       {curComponent ? <Form
+        form={form}
         name="font"
         onValuesChange={onFontChange}
         labelCol={{ span: 9 }}
@@ -107,6 +111,9 @@ export const GetfontSet = () => {
         autoComplete="off"
       >
         {curComponent.instance?.style.fonts.map(item => getFormItem(item))}
+        {/* <Form.Item name={'abs'}>
+          <Input ></Input>
+        </Form.Item> */}
 
       </Form> : null}
     </div>

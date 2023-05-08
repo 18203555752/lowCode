@@ -276,11 +276,6 @@ export class Attr {
 
 }
 
-
-
-
-
-
 export class ComponentInfo {
   id = nanoid()
   name = ""
