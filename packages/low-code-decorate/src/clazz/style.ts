@@ -11,7 +11,6 @@ export class Style {
   private styles!: Styles
   private _top = 0
   private _left = 0
-
   private _posObj: StyleObj = {
 
   }
@@ -160,9 +159,11 @@ export class Style {
 
 
 }
+
 type AttrObj = {
   [key in ConfigAttrKey]?: StyleItem
 }
+
 type AttrClz = "_publicAttr" | "_basicAttr" | "_dataAttr" | "_labelAttr" | "_axisAttr"
 
 /**
@@ -217,7 +218,8 @@ export class Attr {
 
   private setVal(src: any, des: any) {
     Object.keys(src).forEach(key => {
-      des[key] = src[key].val
+      if (!src[key].readonly)
+        des[key] = src[key].val
     })
   }
   /**
