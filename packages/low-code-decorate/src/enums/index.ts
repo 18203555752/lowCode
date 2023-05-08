@@ -1,9 +1,11 @@
+import { EditOutlined, CodepenOutlined } from '@ant-design/icons';
+
 export class GroupType {
     public name: string
-    public icon: string
+    public icon: any
     public key: string
   
-    constructor(name: string, key: string, icon: string) {
+    constructor(name: string, key: string, icon: any) {
       this.name = name
       this.icon = icon
       this.key = key
@@ -50,12 +52,12 @@ export class GroupType {
     new GroupType('边框', ComponentGroup.BORDER, 'border'),
     new GroupType('装饰', ComponentGroup.DECORATION, 'icon'),
     new GroupType('线状图', ComponentGroup.LINE, 'chartLine'),
-    new GroupType('柱状图', ComponentGroup.BAR, 'chartHistogram'),
+    new GroupType('柱状图', ComponentGroup.BAR, CodepenOutlined),
     new GroupType('饼图', ComponentGroup.PIE, 'chartPie'),
     new GroupType('地图', ComponentGroup.MAP, 'map'),
     new GroupType('仪表盘', ComponentGroup.GAUGE, 'dashboard'),
     new GroupType('按钮', ComponentGroup.BUTTON, 'button'),
-    new GroupType('文本', ComponentGroup.TEXT, 'text'),
+    new GroupType('文本', ComponentGroup.TEXT, EditOutlined),
     new GroupType('表格', ComponentGroup.TABLE, 'table'),
     new GroupType('温度计', ComponentGroup.THERMOMETER, 'thermometer'),
     new GroupType('导航', ComponentGroup.NAVIFATION, 'navigation'),

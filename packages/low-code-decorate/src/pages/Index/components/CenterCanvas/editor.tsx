@@ -1,6 +1,6 @@
 import { type FC, Suspense, useContext, useReducer, useState, useEffect } from "react"
 import { componentList } from "@/pages/Index/load"
-import './style/editor.css'
+import './style/editor.less'
 import { ComponentInfo } from "@/clazz/style"
 import Shape from './shape/shape'
 import basicStoreReducer, { initialBasicStore } from "@/reducers/basicStoreReducer"
@@ -13,7 +13,7 @@ const CenterCanvas:FC<Props> = ({name}) => {
   const {curComponent, dispatch: curDispath} = useContext(curComponentConText)
   const [basicStore, dispatch] = useReducer(basicStoreReducer, initialBasicStore)
   const [shuldRemove, setShuldRemove] = useState(false)
-
+  const [exitGrid, setExitGrid] = useState(false)
   const removeCurComponent = (e: React.MouseEvent)=> {
     if(!shuldRemove) return
     console.log('删除curComponent', e.currentTarget, e.target)
@@ -47,7 +47,7 @@ const CenterCanvas:FC<Props> = ({name}) => {
       const y = e.pageY - EditorRectInfo.top
       instance.style.setPos({left: x, top: y})
       const component = {...listItem, instance}
-      console.log(component, x,y)
+      // console.log(component, x,y)
       dispatch({type: 'appendComponent', payload: component})
     }
   }
@@ -57,20 +57,23 @@ const CenterCanvas:FC<Props> = ({name}) => {
     onDrop={handleDrop} 
     onDragOver={handleDragOver}>
       {/* 网格线 */}
-      <div className="grid"></div>
+      {exitGrid? <div className="grid"></div>: <></>}
       {/* 标尺 */}
       <div className="rules"></div>
 
       {/* 操作台组件列表 */}
       <div className="componentsList">
-        {basicStore.map((item, index)=> <Suspense key={item.instance!.id} fallback={<div>Loading...</div>}>
-            <Shape 
+        {basicStore.map((item, index)=>{
+          const Component = item.component;
+         return (<Suspense key={item.instance!.id} fallback={<div>Loading...</div>}>
+            <Shape
+              setExitGrid={setExitGrid}
               id={item.instance!.id}
               component={item}
               styles={item.instance!.style.allStyles}>
-              <item.component ></item.component>
+              <Component basic={item.instance!.attr.attrs._basicAttr}></Component>
             </Shape>            
-        </Suspense>)}  
+        </Suspense>)})}  
       </div>
   </div>
 }

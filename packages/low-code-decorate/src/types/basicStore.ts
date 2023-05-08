@@ -1,10 +1,13 @@
 import { ComponentInfo } from "@/clazz/style"
+import { ComponentGroup } from "@/enums"
 import { Dispatch } from "react"
 
 export type BasicStore = ComponentObj[]
 
 export interface ComponentObj {
-  componentName: string,
+  componentName: string
+  group: ComponentGroup
+  nickName: string
   component: any
   config: any
   instance: ComponentInfo | null

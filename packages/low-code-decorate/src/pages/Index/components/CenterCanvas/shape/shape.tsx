@@ -1,5 +1,5 @@
 import { curComponentConText } from "@/contexts/componentList"
-import React, { type FC, Suspense, useContext, JSXElementConstructor, ReactNode, useMemo, useState, useEffect } from "react"
+import React, { type FC, Suspense, useContext, JSXElementConstructor, ReactNode, useMemo, useState, useEffect, useRef } from "react"
 import './shape.less'
 import { StyleItem } from "@/clazz/type"
 import { ComponentObj } from "@/types/basicStore"
@@ -8,6 +8,7 @@ interface Props {
   children: ReactNode
   component: ComponentObj
   styles: Style
+  setExitGrid: (isShow: boolean)=> void
 }
 interface Style{
   width: string
@@ -15,20 +16,25 @@ interface Style{
   left: string
   top: string
 }
-const CenterCanvas:FC<Props> = ({id, children, styles, component}) => {
+const CenterCanvas:FC<Props> = ({id, children, styles, component, setExitGrid}) => {
+  console.log(`${component.componentName}->shape组件render`)
   const {curComponent, dispatch} = useContext(curComponentConText)
   const [style, setStyle] = useState(styles)
-  const [display, setDispaly] = useState('none')
+  const [display, setDispaly] = useState<boolean>(false)
+  const styleRef = useRef(style)
   const isCurrent = useMemo(()=> {
+    console.log(`isCurrent`)
     if(curComponent) {
       return curComponent.instance!.id === component.instance!.id ? 'isCurrent' : ''
     }
     return ''
   }, [curComponent])
+  const showMask = useMemo(()=> {
+    return isCurrent || display ? 'block' : 'none'
+  }, [isCurrent, display])
   useEffect(()=> {
+    console.log('curComponent改变了！', curComponent)
     if(curComponent && curComponent.instance!.id === component.instance!.id) {
-      console.log(styles)
-      // debugger
       setStyle(styles)
     }
   }, [curComponent])
@@ -37,36 +43,39 @@ const CenterCanvas:FC<Props> = ({id, children, styles, component}) => {
   */
   const handleDragendShape = (e: React.MouseEvent<HTMLDivElement, MouseEvent>)=> {
     e.stopPropagation()
+    setExitGrid(true)
+    const styleResource = component.instance!.style
     // console.log(curComponent, component.instance!.id)
     if(!curComponent || curComponent.instance!.id !== component.instance!.id) return console.log('此组件不是当前活跃组件！')
 
     const startX = e.clientX
     const startY = e.clientY
-
+    let isDrag = false
     /**
      * desc 添加document对象的mousemove事件，用来实现拖拽效果
      * */ 
     const move = (e: MouseEvent)=> {
-      const left = e.clientX - startX + parseInt(style.left.slice(0,-2)) + 'px'
-      const top = e.clientY - startY + parseInt(style.top.slice(0,-2)) + 'px'
-      // console.log( style)
-      setStyle({
+      const left = e.clientX - startX + parseInt(styleResource.left as string) + 'px'
+      const top = e.clientY - startY + parseInt(styleResource.top as string) + 'px'
+      styleRef.current = {
         ...style,
-        // @ts-ignore
         left,
-        // @ts-ignore
         top
-      })
+      }
+      setStyle(styleRef.current)
+      isDrag = true
     }
 
     /**
      *desc 添加document对象的mouseup事件，并在触发后解绑这些事件 ：mousemove、mouseup
      */ 
     const up = ()=> {
-      console.log('mouseupmouseupmouseupmouseupmouseup')
+      
       document.removeEventListener('mousemove', move)
       document.removeEventListener('mouseup', up)
-      dispatch({ type: 'changeCurComponentStyle', payload:{left: style.left.slice(0,-2), top: style.top.slice(0,-2)}})
+      if(isDrag) {
+        dispatch({ type: 'changeCurComponentStyle', payload:{left: styleRef.current.left.slice(0,-2), top: styleRef.current.top.slice(0,-2)}})
+      }
     }
 
     document.addEventListener('mousemove', move)
@@ -78,30 +87,26 @@ const CenterCanvas:FC<Props> = ({id, children, styles, component}) => {
    * desc 设置当前组件为选中组件
   */
   const setCurComponent = (e: React.MouseEvent)=> {
+    // console.log('setCurComponentsetCurComponentsetCurComponent')
     e.stopPropagation()
     e.preventDefault()
+    setExitGrid(false)
     if(curComponent && curComponent.instance!.id === component.instance!.id) return
     dispatch({type: 'setCurComponent', payload: {component}})
   }
 
-  const maskShow = ()=> {
-    setDispaly('block')
-  }
-  const maskHide = ()=> {
-    setDispaly('none')
-  }
   return (
-    <div 
+    <div
       id={'shape_'+id} 
       className={"shape" + ' ' + isCurrent}
       style={{...style}}
       onMouseDown={handleDragendShape}
       onClick={setCurComponent}
-      onMouseEnter={maskShow}
-      onMouseLeave={maskHide}
+      onMouseEnter={()=> {setDispaly(true)}}
+      onMouseLeave={()=> {setDispaly(false)}}
       >
         {children}
-        <div className='mask' style={{display}}></div>
+        <div className='mask' style={{display: showMask}}></div>
     </div>)
 }
 

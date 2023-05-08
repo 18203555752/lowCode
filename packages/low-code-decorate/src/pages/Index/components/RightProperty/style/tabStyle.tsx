@@ -49,6 +49,7 @@ const GetPos = () => {
   const [form] = Form.useForm();
   const { curComponent, dispatch } = useContext(curComponentConText)
   const onPosChange = (a: any) => {
+    console.log(a)
     dispatch({ type: "changeCurComponentStyle", payload: { ...a, type: 'pos' } })
   
   }
