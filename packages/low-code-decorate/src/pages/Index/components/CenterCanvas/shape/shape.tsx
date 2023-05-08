@@ -45,7 +45,7 @@ const CenterCanvas:FC<Props> = ({id, children, styles, component, setExitGrid}) 
   const handleDragendShape = (e: React.MouseEvent<HTMLDivElement, MouseEvent>)=> {
     e.stopPropagation()
     setExitGrid(true)
-    const styleResource = component.instance!.style
+    const {left: startLeft, top: startTop} = component.instance!.style
     // console.log(curComponent, component.instance!.id)
     if(!curComponent || curComponent.instance!.id !== component.instance!.id) return console.log('此组件不是当前活跃组件！')
 
@@ -56,8 +56,10 @@ const CenterCanvas:FC<Props> = ({id, children, styles, component, setExitGrid}) 
      * desc 添加document对象的mousemove事件，用来实现拖拽效果
      * */ 
     const move = throttle((e: MouseEvent)=> {
-      const left = e.clientX - startX + parseInt(styleResource.left as string) + 'px'
-      const top = e.clientY - startY + parseInt(styleResource.top as string) + 'px'
+      const left = e.clientX - startX + parseInt(startLeft as string) + 'px'
+      const top = e.clientY - startY + parseInt(startTop as string) + 'px'
+      console.log(e.clientX , startX , parseInt(startLeft as string))
+      console.log(e.clientY, startY , parseInt(startTop as string))
       console.log(left, top)
       styleRef.current = {
         ...style,
@@ -76,7 +78,10 @@ const CenterCanvas:FC<Props> = ({id, children, styles, component, setExitGrid}) 
       document.removeEventListener('mousemove', move)
       document.removeEventListener('mouseup', up)
       if(isDrag) {
-        dispatch({ type: 'changeCurComponentStyle', payload:{left: styleRef.current.left.slice(0,-2), top: styleRef.current.top.slice(0,-2)}})
+        requestAnimationFrame(()=> {
+          dispatch({ type: 'changeCurComponentStyle', payload:{left: styleRef.current.left.slice(0,-2), top: styleRef.current.top.slice(0,-2)}})
+        })
+        
       }
     }
 
