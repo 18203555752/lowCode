@@ -1,8 +1,8 @@
 import type { PoolOptions } from 'mysql2/promise';
 
 export const databaseConfig: PoolOptions = {
-  host: '101.35.250.201',
+  host: 'localhost',
   user: 'root',
-  password: '5201314..',
+  password: '123456',
   database: 'test',
 };

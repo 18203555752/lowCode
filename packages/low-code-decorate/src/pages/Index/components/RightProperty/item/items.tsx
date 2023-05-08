@@ -8,7 +8,7 @@ export const getFormItem = (item: StyleItem, i = 0) => {
   switch (item.type) {
     case StyleItemType.Number:
       return <Form.Item
-        key={item.style}
+
         label={item.name}
         name={item.style}
       >

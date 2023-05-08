@@ -31,13 +31,14 @@ const GetBasicAttr = (props: any) => {
   }
   useEffect(() => {
     if (curComponent && curComponent.instance?.attr) {
-      const o = getinitaBasicValues(curComponent.instance.attr)
+      const o = getinitaBasicValues(curComponent?.instance?.attr.getAttr(type))
       form.setFieldsValue(o)
     }
   }, [curComponent])
   return (
     <Form
-      name="basicAttr"
+      name={type}
+      form={form}
       // labelCol={{ span: 9 }}
       // wrapperCol={{ span: 15 }}
       style={{ maxWidth: 600 }}
@@ -45,7 +46,7 @@ const GetBasicAttr = (props: any) => {
       initialValues={getinitaBasicValues(curComponent?.instance?.attr.getAttr(type))}
       autoComplete="off"
     >
-      {Object.values(curComponent?.instance?.attr?.getAttr(type) || {}).map((item,i) => getFormItem(item,i))}
+      {Object.values(curComponent?.instance?.attr?.getAttr(type) || {}).map((item, i) => getFormItem(item, i))}
 
     </Form>);
 }
@@ -110,7 +111,7 @@ export const getAttr = (curComponent: ComponentObj | null, dispatch: Function) =
           <GetBasicAttr type={"_labelAttr"}></GetBasicAttr>
         </Panel > : null
       }
-          {
+      {
         curComponent.instance?.attr.hasAttr("_axisAttr") ? < Panel header="轴配置" key="5" >
           <GetBasicAttr type={"_axisAttr"}></GetBasicAttr>
         </Panel > : null
