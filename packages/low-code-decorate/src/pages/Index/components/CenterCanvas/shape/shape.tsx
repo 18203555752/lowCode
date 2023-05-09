@@ -1,4 +1,4 @@
-import { curComponentConText } from "@/contexts/componentList"
+import { basicStoreConText } from "@/contexts/componentList"
 import React, { type FC, Suspense, useContext, JSXElementConstructor, ReactNode, useMemo, useState, useEffect, useRef } from "react"
 import './shape.less'
 import { StyleItem } from "@/clazz/type"
@@ -9,6 +9,7 @@ interface Props {
   children: ReactNode
   component: ComponentObj
   styles: Style
+  index: number
   setExitGrid: (isShow: boolean)=> void
 }
 interface Style{
@@ -17,28 +18,25 @@ interface Style{
   left: string
   top: string
 }
-const CenterCanvas:FC<Props> = ({id, children, styles, component, setExitGrid}) => {
+const CenterCanvas:FC<Props> = ({id, index, children, styles, component, setExitGrid}) => {
   // console.log(`${component.componentName}->shape组件render`)
-  const {curComponent, dispatch} = useContext(curComponentConText)
+  const {basicStore, dispatch} = useContext(basicStoreConText)
+  const {index: curIndex} = basicStore
   const [style, setStyle] = useState(styles)
   const [display, setDispaly] = useState<boolean>(false)
   const styleRef = useRef(style)
   const isCurrent = useMemo(()=> {
-    console.log(`isCurrent`)
-    if(curComponent) {
-      return curComponent.instance!.id === component.instance!.id ? 'isCurrent' : ''
-    }
-    return ''
-  }, [curComponent])
+    return (curIndex === index) ? 'isCurrent' : ''
+  }, [curIndex, index])
   const showMask = useMemo(()=> {
     return isCurrent || display ? 'block' : 'none'
   }, [isCurrent, display])
   useEffect(()=> {
-    console.log('curComponent改变了！', curComponent)
+    console.log('curComponent改变了！', curIndex)
     // if(curComponent && curComponent.instance!.id === component.instance!.id) {
     //   setStyle(styles)
     // }
-  }, [curComponent])
+  }, [curIndex])
   /**
    * desc鼠标拖拽事件
   */
@@ -46,8 +44,8 @@ const CenterCanvas:FC<Props> = ({id, children, styles, component, setExitGrid}) 
     e.stopPropagation()
     setExitGrid(true)
     const {left: startLeft, top: startTop} = component.instance!.style
-    // console.log(curComponent, component.instance!.id)
-    if(!curComponent || curComponent.instance!.id !== component.instance!.id) return console.log('此组件不是当前活跃组件！')
+    console.log(curIndex, index)
+    if(curIndex !== null && curIndex !== index) return console.log('此组件不是当前活跃组件！')
 
     const startX = e.clientX
     const startY = e.clientY
@@ -79,9 +77,14 @@ const CenterCanvas:FC<Props> = ({id, children, styles, component, setExitGrid}) 
       document.removeEventListener('mouseup', up)
       if(isDrag) {
         requestAnimationFrame(()=> {
-          dispatch({ type: 'changeCurComponentStyle', payload:{left: styleRef.current.left.slice(0,-2), top: styleRef.current.top.slice(0,-2)}})
-        })
-        
+          dispatch({ type: 'changeCurComponentStyle', payload:{
+            id: component.instance?.id,
+            type: 'pos',
+            style: {
+              left: styleRef.current.left.slice(0,-2), top: styleRef.current.top.slice(0,-2)}
+            }
+          })
+        })        
       }
     }
 
@@ -98,8 +101,8 @@ const CenterCanvas:FC<Props> = ({id, children, styles, component, setExitGrid}) 
     e.stopPropagation()
     e.preventDefault()
     setExitGrid(false)
-    if(curComponent && curComponent.instance!.id === component.instance!.id) return
-    dispatch({type: 'setCurComponent', payload: {component}})
+    if(curIndex && curIndex === index) return
+    dispatch({type: 'setIndex', payload: {index}})
   }
 
   return (

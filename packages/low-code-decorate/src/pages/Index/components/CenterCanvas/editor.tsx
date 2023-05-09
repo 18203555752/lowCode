@@ -3,27 +3,21 @@ import { componentList } from "@/pages/Index/load"
 import './style/editor.less'
 import { ComponentInfo } from "@/clazz/style"
 import Shape from './shape/shape'
-import basicStoreReducer, { initialBasicStore } from "@/reducers/basicStoreReducer"
-import { curComponentConText } from "@/contexts/componentList"
+import { basicStoreConText } from "@/contexts/componentList"
 import React from "react"
 interface Props {
   name: string
 }
 const CenterCanvas:FC<Props> = ({name}) => {
-  const {curComponent, dispatch: curDispath} = useContext(curComponentConText)
-  const [basicStore, dispatch] = useReducer(basicStoreReducer, initialBasicStore)
+  const {basicStore, dispatch} = useContext(basicStoreConText)
   const [shuldRemove, setShuldRemove] = useState(false)
   const [exitGrid, setExitGrid] = useState(false)
   const removeCurComponent = (e: React.MouseEvent)=> {
     if(!shuldRemove) return
     console.log('删除curComponent', e.currentTarget, e.target)
-    curDispath({type: 'remove', payload: null})
+    dispatch({type: 'setIndex', payload: {index: null}})
     setShuldRemove(false)
   }
-  // useEffect(()=> {
-  //   console.log('curComponent变了！')
-  //   dispatch({type: 'refresh', payload: 'refresh'})
-  // }, [curComponent])
   /**
    * desc 从左侧组件列表拖拽至编辑器区域的事件
   */
@@ -63,12 +57,13 @@ const CenterCanvas:FC<Props> = ({name}) => {
 
       {/* 操作台组件列表 */}
       <div className="componentsList">
-        {basicStore.map((item, index)=>{
+        {basicStore.componentData.map((item, index)=>{
           const Component = item.component;
          return (<Suspense key={item.instance!.id} fallback={<div>Loading...</div>}>
             <Shape
               setExitGrid={setExitGrid}
               id={item.instance!.id}
+              index={index}
               component={item}
               styles={item.instance!.style.allStyles}>
               <Component basic={item.instance!.attr.attrs._basicAttr}></Component>

@@ -2,7 +2,10 @@ import { ComponentInfo } from "@/clazz/style"
 import { ComponentGroup } from "@/enums"
 import { Dispatch } from "react"
 
-export type BasicStore = ComponentObj[]
+export type BasicStore = {
+  index: number | null
+  componentData: ComponentObj[]
+}
 
 export interface ComponentObj {
   componentName: string

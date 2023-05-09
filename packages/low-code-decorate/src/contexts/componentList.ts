@@ -1,7 +1,8 @@
-import { ComponentObj } from '@/types/basicStore';
+import { initialBasicStore } from '@/reducers/basicStoreReducer';
+import { BasicStore, ComponentObj } from '@/types/basicStore';
 import React, {type Dispatch} from 'react';
-
-export const curComponentConText = React.createContext<{curComponent: ComponentObj|null, dispatch: Dispatch<{type: string, payload: any}>}>({
-  curComponent: null,
+type basicStoreAction = 'appendComponent' | 'removeComponent' | 'setIndex' | 'changeCurComponentStyle'
+export const basicStoreConText = React.createContext<{basicStore: BasicStore, dispatch: Dispatch<{type: basicStoreAction, payload: any}>}>({
+  basicStore: initialBasicStore,
   dispatch: ()=> {}
 });
