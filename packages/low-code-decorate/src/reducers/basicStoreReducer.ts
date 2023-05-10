@@ -17,7 +17,7 @@ export default (state: BasicStore, action: { type: string, payload: any }) => {
         case 'setIndex': 
             console.log(payload)
             return {
-                index: payload.index,
+                index: payload.id,
                 componentData: state.componentData
             }
         case 'changeCurComponentStyle':
@@ -54,7 +54,7 @@ function removeComponent(state: BasicStore, payload: any) {
 */
 function changeCurComponentStyle(state: BasicStore, payload: any) {
     const component = state.componentData.find((component)=> component.instance?.id === payload.id)
-    if(!component) return '没找到当前选中的组件'
+    if(!component || state.index !== payload.id) return '没找到当前选中的组件'
     if (payload.type == 'font') {
         component!.instance!.style.setFont(payload.style)
 

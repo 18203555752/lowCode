@@ -3,7 +3,7 @@ import { ComponentGroup } from "@/enums"
 import { Dispatch } from "react"
 
 export type BasicStore = {
-  index: number | null
+  index: string | null
   componentData: ComponentObj[]
 }
 

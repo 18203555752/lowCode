@@ -26,8 +26,8 @@ const CenterCanvas:FC<Props> = ({id, index, children, styles, component, setExit
   const [display, setDispaly] = useState<boolean>(false)
   const styleRef = useRef(style)
   const isCurrent = useMemo(()=> {
-    return (curIndex === index) ? 'isCurrent' : ''
-  }, [curIndex, index])
+    return (curIndex === id) ? 'isCurrent' : ''
+  }, [curIndex, id])
   const showMask = useMemo(()=> {
     return isCurrent || display ? 'block' : 'none'
   }, [isCurrent, display])
@@ -44,8 +44,8 @@ const CenterCanvas:FC<Props> = ({id, index, children, styles, component, setExit
     e.stopPropagation()
     setExitGrid(true)
     const {left: startLeft, top: startTop} = component.instance!.style
-    console.log(curIndex, index)
-    if(curIndex !== null && curIndex !== index) return console.log('此组件不是当前活跃组件！')
+    console.log(curIndex, id)
+    if(curIndex !== null && curIndex !== id) return console.log('此组件不是当前活跃组件！')
 
     const startX = e.clientX
     const startY = e.clientY
@@ -101,8 +101,8 @@ const CenterCanvas:FC<Props> = ({id, index, children, styles, component, setExit
     e.stopPropagation()
     e.preventDefault()
     setExitGrid(false)
-    if(curIndex && curIndex === index) return
-    dispatch({type: 'setIndex', payload: {index}})
+    if(curIndex && curIndex === id) return
+    dispatch({type: 'setIndex', payload: {id}})
   }
 
   return (
