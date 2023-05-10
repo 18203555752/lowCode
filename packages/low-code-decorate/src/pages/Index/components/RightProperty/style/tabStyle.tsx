@@ -54,12 +54,13 @@ const GetPos = () => {
     if (basicStore.index)
       return basicStore.componentData.find(item => item.instance?.id === basicStore.index) || null
     return null
-  }, [basicStore])
+  }, [])
   const onPosChange = (a: any) => {
-    dispatch({ type: "changeCurComponentStyle", payload: {stype:{ ...a}, type: 'pos' } })
+    dispatch({ type: "changeCurComponentStyle", payload: {style:{ ...a}, type: 'pos' } })
 
   }
   useEffect(() => {
+    console.log(1212)
     if (curComponent && curComponent.instance?.style) {
       const o: any = {}
       curComponent.instance.style.pos.forEach(item => {
@@ -67,7 +68,7 @@ const GetPos = () => {
       })
       form.setFieldsValue(o)
     }
-  }, [curComponent])
+  }, [basicStore])
   return (<div>
 
     {curComponent ? <Form
@@ -109,7 +110,7 @@ export const GetfontSet = () => {
       })
       form.setFieldsValue(o)
     }
-  }, [curComponent])
+  }, [basicStore])
   return (
     <div>
       {curComponent ? <Form

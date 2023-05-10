@@ -132,6 +132,7 @@ export class Style {
         tmp.val = obj[_key] || ""
       }
     })
+    this._posObj = { ...this._posObj }
 
 
     return this
@@ -150,6 +151,7 @@ export class Style {
         tmp.val = obj[_key] || ""
       }
     })
+    this._fontObj = { ...this._fontObj }
     return this;
   }
 
