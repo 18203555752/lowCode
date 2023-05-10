@@ -5,10 +5,11 @@ import { SketchPicker } from 'react-color'
 import "../index.less"
 import { ComponentInfo, Style } from "@/clazz/style";
 import { StyleItem, StyleItemType } from "@/clazz/type";
-import { useContext, useEffect, useState } from "react";
-import { curComponentConText } from "@/contexts/componentList";
+import { useContext, useEffect, useMemo, useState } from "react";
+// import { curComponentConText } from "@/contexts/componentList";
 import { Color } from "../item/Color";
 import { getFormItem } from "../item/items";
+import { basicStoreConText } from "@/contexts/componentList";
 const { Option } = Select;
 const { Panel } = Collapse;
 // const compoent = new ComponentInfo()
@@ -47,7 +48,13 @@ const onChange = (key: string | string[]) => {
 
 const GetPos = () => {
   const [form] = Form.useForm();
-  const { curComponent, dispatch } = useContext(curComponentConText)
+  // const { curComponent, dispatch } = useContext(curComponentConText)
+  const { basicStore, dispatch } = useContext(basicStoreConText)
+  const curComponent = useMemo(() => {
+    if (basicStore.index)
+      return basicStore.componentData[basicStore.index]
+    return null
+  }, [basicStore])
   const onPosChange = (a: any) => {
     dispatch({ type: "changeCurComponentStyle", payload: { ...a, type: 'pos' } })
 
@@ -81,7 +88,12 @@ const GetPos = () => {
   );
 }
 export const GetfontSet = () => {
-  const { curComponent, dispatch } = useContext(curComponentConText)
+  const { basicStore, dispatch } = useContext(basicStoreConText)
+  const curComponent = useMemo(() => {
+    if (basicStore.index)
+      return basicStore.componentData[basicStore.index]
+    return null
+  }, [basicStore])
   const [form] = Form.useForm();
   const onFontChange = (a: any) => {
     console.log(555)

@@ -1,9 +1,8 @@
-import { ComponentInfo, Attr } from "@/clazz/style";
-import { StyleItem, StyleItemType } from "@/clazz/type";
-import { curComponentConText } from "@/contexts/componentList";
+
+import { basicStoreConText,  } from "@/contexts/componentList";
 import { ComponentObj } from "@/types/basicStore";
 import { Collapse, Form, Input, InputNumber, Select } from "antd";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useMemo } from "react";
 import { getFormItem } from "../item/items";
 
 const { Panel } = Collapse;
@@ -21,8 +20,12 @@ const getinitaBasicValues = (o: any) => {
  * @returns 
  */
 const GetBasicAttr = (props: any) => {
-
-  const { curComponent, dispatch } = useContext(curComponentConText)
+  const { basicStore, dispatch } = useContext(basicStoreConText)
+  const curComponent = useMemo(() => {
+    if (basicStore.index)
+      return basicStore.componentData[basicStore.index]
+    return null
+  }, [basicStore])
   const [form] = Form.useForm();
   const { type, } = props;
 
@@ -53,39 +56,8 @@ const GetBasicAttr = (props: any) => {
 const onChange = (key: string | string[]) => {
   // console.log(key);
 };
-/**
- *基础属性组件
- * @returns 
- */
-const GetPublicAttr = () => {
-  const { curComponent, dispatch } = useContext(curComponentConText)
-  const [form] = Form.useForm();
-  const onChangeBasic = (a: any) => {
-    dispatch({ type: "changeCurComponentAttr", payload: { type: "_publicAttr", ...a } })
-  }
-  useEffect(() => {
-    if (curComponent && curComponent.instance?.attr) {
-      const o = getinitaBasicValues(curComponent.instance.attr)
-      form.setFieldsValue(o)
-    }
-  }, [curComponent])
-  return (
-    <Form
-      name="publicAttr"
-      labelCol={{ span: 8 }}
-      wrapperCol={{ span: 16 }}
-      style={{ maxWidth: 600 }}
-      onValuesChange={onChangeBasic}
-      initialValues={getinitaBasicValues(curComponent?.instance?.attr.getAttr("_publicAttr"))}
-      autoComplete="off"
-    >
-      {Object.values(curComponent?.instance?.attr?.getAttr("_publicAttr") || {}).map(item => getFormItem(item))}
 
-    </Form>);
-}
-
-
-export const getAttr = (curComponent: ComponentObj | null, dispatch: Function) => {
+export const getAttr = (curComponent: ComponentObj | null,) => {
 
 
   // console.log(curComponent?.instance?.attr.attrs)
