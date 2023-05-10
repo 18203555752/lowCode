@@ -6,7 +6,7 @@ import { getStyle } from './style/tabStyle';
 import l from "./index.less"
 import { useContext, useMemo, useState } from 'react';
 import { getAttr } from './style/attr';
-import { basicStoreConText,  } from '@/contexts/componentList';
+import { basicStoreConText, } from '@/contexts/componentList';
 // console.log(l)
 
 
@@ -20,7 +20,7 @@ export const RightProperty = () => {
   const { basicStore, dispatch } = useContext(basicStoreConText)
   const curComponent = useMemo(() => {
     if (basicStore.index)
-      return basicStore.componentData[basicStore.index]
+      return basicStore.componentData.find(item => item.instance?.id === basicStore.index) || null
     return null
   }, [basicStore])
 
@@ -34,7 +34,7 @@ export const RightProperty = () => {
     {
       key: '2',
       label: `属性`,
-      children: getAttr(curComponent, ),
+      children: getAttr(curComponent,),
     },
     {
       key: '3',

@@ -52,11 +52,11 @@ const GetPos = () => {
   const { basicStore, dispatch } = useContext(basicStoreConText)
   const curComponent = useMemo(() => {
     if (basicStore.index)
-      return basicStore.componentData[basicStore.index]
+      return basicStore.componentData.find(item => item.instance?.id === basicStore.index) || null
     return null
   }, [basicStore])
   const onPosChange = (a: any) => {
-    dispatch({ type: "changeCurComponentStyle", payload: { ...a, type: 'pos' } })
+    dispatch({ type: "changeCurComponentStyle", payload: {stype:{ ...a}, type: 'pos' } })
 
   }
   useEffect(() => {
@@ -91,13 +91,13 @@ export const GetfontSet = () => {
   const { basicStore, dispatch } = useContext(basicStoreConText)
   const curComponent = useMemo(() => {
     if (basicStore.index)
-      return basicStore.componentData[basicStore.index]
+      return basicStore.componentData.find(item => item.instance?.id === basicStore.index) || null
     return null
   }, [basicStore])
   const [form] = Form.useForm();
   const onFontChange = (a: any) => {
     console.log(555)
-    dispatch({ type: "changeCurComponentStyle", payload: { ...a, type: 'font' } })
+    dispatch({ type: "changeCurComponentStyle", payload: { style: { ...a }, type: 'font' } })
 
   }
   useEffect(() => {

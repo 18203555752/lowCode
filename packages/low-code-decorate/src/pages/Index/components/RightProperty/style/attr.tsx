@@ -23,7 +23,7 @@ const GetBasicAttr = (props: any) => {
   const { basicStore, dispatch } = useContext(basicStoreConText)
   const curComponent = useMemo(() => {
     if (basicStore.index)
-      return basicStore.componentData[basicStore.index]
+    return basicStore.componentData.find(item => item.instance?.id === basicStore.index) || null
     return null
   }, [basicStore])
   const [form] = Form.useForm();

@@ -14,6 +14,7 @@ console.log(componentList)
 const { Header, Content, Sider } = Layout;
 
 export const Index = () => {
+  //@ts-ignore
   const [basicStore, dispatch] = useReducer(basicStoreReducer, initialBasicStore)
   return (
     <basicStoreConText.Provider value={{basicStore, dispatch}}>
@@ -28,7 +29,7 @@ export const Index = () => {
             <CenterCanvas name='画布区域'></CenterCanvas>            
           </Content>
           <Sider width={200} style={{background: 'rgb(33, 37, 40)'}}>
-          {/* <RightProperty></RightProperty>   */}
+          <RightProperty></RightProperty>  
           </Sider>
         </Layout>
       </Layout>
