@@ -93,11 +93,11 @@ export function createrDecorateController(connection: mysql.Pool) {
     });
     res.json({ code: RET.OK, data: null, msg: error_map[RET.OK] });
   });
-  app.use('/api', (req, res, next) => {
+  app.use('/low', (req, res, next) => {
     logger.info(`${req.method} ${req.originalUrl}`);
     next();
   });
-  app.use('/api', router);
+  app.use('/low', router);
 
 
 

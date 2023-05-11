@@ -29,7 +29,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
-    "build": "rollup -c ./rollup.config.mjs"
+    "build": "rollup -c ./rollup.config.mjs",
+    "ts":"tsc"
   },
   "eslintConfig": {
     "extends": []
