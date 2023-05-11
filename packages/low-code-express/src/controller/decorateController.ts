@@ -46,7 +46,7 @@ export function createrDecorateController(connection: mysql.Pool) {
     if (decorate && typeof decorate.list == 'string') {
       decorate.list = JSON.parse(decorate.list);
     }
-    res.json({ code: RET.OK, data: decorate||{}, msg: error_map[RET.OK] });
+    res.json({ code: RET.OK, data: decorate || {}, msg: error_map[RET.OK] });
   });
 
   /**
@@ -74,7 +74,7 @@ export function createrDecorateController(connection: mysql.Pool) {
     if (typeof tmp.list == 'object') {
       tmp.list = JSON.stringify(tmp.list);
     }
-    const decorate = await decorateService.updateDecorate(tmp).catch(err => {
+    await decorateService.updateDecorate(tmp).catch(err => {
       res.json({ code: RET.DATAERR, data: null, msg: err.sqlMessage });
     });
     res.json({ code: RET.OK, data: [], msg: error_map[RET.OK] });
