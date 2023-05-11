@@ -10,7 +10,7 @@ import cors from 'cors';
 interface Decorate {
   id?: number;
   userId?: number;
-  txt: string
+  list: string
 
 }
 
@@ -43,10 +43,10 @@ export function createrDecorateController(connection: mysql.Pool) {
     const decorate = await decorateService.getDecorateById(id).catch(err => {
       res.json({ code: RET.DATAERR, data: null, msg: err.sqlMessage });
     }) as Decorate;
-    if (typeof decorate.txt == 'string') {
-      decorate.txt = JSON.parse(decorate.txt);
+    if (decorate && typeof decorate.list == 'string') {
+      decorate.list = JSON.parse(decorate.list);
     }
-    res.json({ code: RET.OK, data: decorate, msg: error_map[RET.OK] });
+    res.json({ code: RET.OK, data: decorate||{}, msg: error_map[RET.OK] });
   });
 
   /**
@@ -54,16 +54,14 @@ export function createrDecorateController(connection: mysql.Pool) {
  */
   router.get('/decorate/list/:userId', async (req, res) => {
     const id = parseInt(req.params.userId, 10);
-    console.log(id);
     const decorate = await decorateService.getDecorateByUserId(id).catch(err => {
       res.json({ code: RET.DATAERR, data: null, msg: err.sqlMessage });
     }) as Decorate[];
     decorate.forEach(item => {
-      // if(item)
-      item.txt = JSON.parse(item.txt);
+      item.list = JSON.parse(item.list);
 
     });
-    // if (typeof decorate.txt == 'string') {
+    // if (typeof decorate.list == 'string') {
     // }
     res.json({ code: RET.OK, data: decorate, msg: error_map[RET.OK] });
   });
@@ -73,8 +71,8 @@ export function createrDecorateController(connection: mysql.Pool) {
    */
   router.put('/decorate', async (req, res) => {
     const tmp = req.body as Decorate;
-    if (typeof tmp.txt == 'object') {
-      tmp.txt = JSON.stringify(tmp.txt);
+    if (typeof tmp.list == 'object') {
+      tmp.list = JSON.stringify(tmp.list);
     }
     const decorate = await decorateService.updateDecorate(tmp).catch(err => {
       res.json({ code: RET.DATAERR, data: null, msg: err.sqlMessage });
@@ -86,8 +84,8 @@ export function createrDecorateController(connection: mysql.Pool) {
    */
   router.post('/decorate', async (req, res) => {
     const decorate = req.body as Decorate;
-    if (typeof decorate.txt == 'object') {
-      decorate.txt = JSON.stringify(decorate.txt);
+    if (typeof decorate.list == 'object') {
+      decorate.list = JSON.stringify(decorate.list);
     }
     await decorateService.createDecorate(decorate).catch(err => {
       res.json({ code: RET.DATAERR, data: null, msg: err.sqlMessage });

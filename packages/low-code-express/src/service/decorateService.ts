@@ -3,7 +3,7 @@ import { createdecorateDao } from '../dao/decorateDao';
 
 interface Decorate {
   id?: number;
-  txt: string;
+  list: string;
 
 }
 

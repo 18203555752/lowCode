@@ -1,5 +1,5 @@
 
-import { basicStoreConText,  } from "@/contexts/componentList";
+import { basicStoreConText, } from "@/contexts/componentList";
 import { ComponentObj } from "@/types/basicStore";
 import { Collapse, Form, Input, InputNumber, Select } from "antd";
 import { useContext, useEffect, useMemo } from "react";
@@ -21,14 +21,14 @@ const getinitaBasicValues = (o: any) => {
  */
 const GetBasicAttr = (props: any) => {
   const { basicStore, dispatch } = useContext(basicStoreConText)
-  const curComponent = useMemo(() => {
-    if (basicStore.index)
-    return basicStore.componentData.find(item => item.instance?.id === basicStore.index) || null
-    return null
-  }, [basicStore])
+  const curComponent = props.curComponent as ComponentObj | null;
+  // const curComponent = useMemo(() => {
+  //   if (basicStore.index)
+  //     return basicStore.componentData.find(item => item.instance?.id === basicStore.index) || null
+  //   return null
+  // }, [basicStore])
   const [form] = Form.useForm();
   const { type, } = props;
-
   const onChangeBasic = (a: any) => {
     dispatch({ type: "changeCurComponentAttr", payload: { type: type, ...a } })
   }
@@ -58,34 +58,31 @@ const onChange = (key: string | string[]) => {
 };
 
 export const getAttr = (curComponent: ComponentObj | null,) => {
-
-
-  // console.log(curComponent?.instance?.attr.attrs)
   return (<>
     {curComponent ? <Collapse className="style-collapse" defaultActiveKey={['1', '2']} onChange={onChange}>
       {
         curComponent.instance?.attr.hasAttr("_publicAttr") ? < Panel header="公共属性" key="2" >
-          <GetBasicAttr type={"_publicAttr"}></GetBasicAttr>
+          <GetBasicAttr curComponent={curComponent} type={"_publicAttr"}></GetBasicAttr>
         </Panel > : null
       }
       {
         curComponent.instance?.attr.hasAttr("_basicAttr") ? < Panel header="基础属性" key="1" >
-          <GetBasicAttr type={"_basicAttr"}></GetBasicAttr>
+          <GetBasicAttr curComponent={curComponent} type={"_basicAttr"}></GetBasicAttr>
         </Panel > : null
       }
       {
         curComponent.instance?.attr.hasAttr("_dataAttr") ? < Panel header="数据配置" key="3" >
-          <GetBasicAttr type={"_dataAttr"}></GetBasicAttr>
+          <GetBasicAttr curComponent={curComponent} type={"_dataAttr"}></GetBasicAttr>
         </Panel > : null
       }
       {
         curComponent.instance?.attr.hasAttr("_labelAttr") ? < Panel header="标签配置" key="4" >
-          <GetBasicAttr type={"_labelAttr"}></GetBasicAttr>
+          <GetBasicAttr curComponent={curComponent} type={"_labelAttr"}></GetBasicAttr>
         </Panel > : null
       }
       {
         curComponent.instance?.attr.hasAttr("_axisAttr") ? < Panel header="轴配置" key="5" >
-          <GetBasicAttr type={"_axisAttr"}></GetBasicAttr>
+          <GetBasicAttr curComponent={curComponent} type={"_axisAttr"}></GetBasicAttr>
         </Panel > : null
       }
 

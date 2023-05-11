@@ -2,7 +2,7 @@ import * as mysql from 'mysql2/promise';
 
 interface Decorate {
   id?: number;
-  txt: string;
+  list: string;
   userId?: number
 
 }
@@ -18,19 +18,19 @@ interface DecorateDao {
 export function createdecorateDao(connection: mysql.Pool): DecorateDao {
   return {
     async findById(id: number) {
-      const [rows] = await connection.query<any>('SELECT * FROM decorates WHERE id = ?', [id]);
+      const [rows] = await connection.query<any>('SELECT id,userId,txt as list FROM decorates WHERE id = ?', [id]);
       return rows[0];
     },
     async getListByUserId(userId: number) {
-      const rows = await connection.query<any>('SELECT * FROM decorates WHERE userId = ?', [userId]);
+      const rows = await connection.query<any>('SELECT id,userId,txt as list FROM decorates WHERE userId = ?', [userId]);
       return rows[0];
     },
 
     async create(decorate: Decorate) {
-      return await connection.query('INSERT INTO decorates(userId,txt) values(?,?)', [decorate.userId, decorate.txt]);
+      return await connection.query('INSERT INTO decorates(userId,txt) values(?,?)', [decorate.userId, decorate.list]);
     },
     async update(decorate: Decorate) {
-      await connection.query('UPDATE  decorates SET TXT=? WHERE ID = ?', [decorate.txt, decorate.id]);
+      await connection.query('UPDATE  decorates SET TXT=? WHERE ID = ?', [decorate.list, decorate.id]);
     },
 
 

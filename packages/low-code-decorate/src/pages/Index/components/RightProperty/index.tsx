@@ -32,7 +32,7 @@ export const RightProperty = () => {
       key: '1',
       label: `样式`,
 
-      children: getStyle(),
+      children: getStyle(curComponent),
     },
     {
       key: '2',

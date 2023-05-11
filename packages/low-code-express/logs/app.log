@@ -50,3 +50,15 @@
 {"level":"info","message":"POST /api/decorate"}
 {"level":"info","message":"POST /api/decorate"}
 {"level":"info","message":"GET /api/decorate/list/0"}
+{"level":"info","message":"POST /api/decorate"}
+{"level":"info","message":"POST /api/decorate"}
+{"level":"info","message":"POST /api/decorate"}
+{"level":"info","message":"GET /api/decorate/15"}
+{"level":"info","message":"GET /api/decorate/15"}
+{"level":"info","message":"GET /api/decorate/15"}
+{"level":"info","message":"GET /api/decorate/0"}
+{"level":"info","message":"GET /api/decorate/0"}
+{"level":"info","message":"GET /api/decorate/0"}
+{"level":"info","message":"POST /api/decorate"}
+{"level":"info","message":"GET /api/decorate"}
+{"level":"info","message":"GET /api/decorate/16"}

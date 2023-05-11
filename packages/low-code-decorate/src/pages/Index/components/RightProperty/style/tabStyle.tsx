@@ -10,6 +10,7 @@ import { useContext, useEffect, useMemo, useState } from "react";
 import { Color } from "../item/Color";
 import { getFormItem } from "../item/items";
 import { basicStoreConText } from "@/contexts/componentList";
+import { ComponentObj } from "@/types/basicStore";
 const { Option } = Select;
 const { Panel } = Collapse;
 // const compoent = new ComponentInfo()
@@ -46,21 +47,16 @@ const onChange = (key: string | string[]) => {
 
 
 
-const GetPos = () => {
+const GetPos = (props: any) => {
   const [form] = Form.useForm();
   // const { curComponent, dispatch } = useContext(curComponentConText)
   const { basicStore, dispatch } = useContext(basicStoreConText)
-  const curComponent = useMemo(() => {
-    if (basicStore.index)
-      return basicStore.componentData.find(item => item.instance?.id === basicStore.index) || null
-    return null
-  }, [])
+  const curComponent = props.curComponent as ComponentObj | null;
   const onPosChange = (a: any) => {
-    dispatch({ type: "changeCurComponentStyle", payload: {style:{ ...a}, type: 'pos' } })
+    dispatch({ type: "changeCurComponentStyle", payload: { style: { ...a }, type: 'pos' } })
 
   }
   useEffect(() => {
-    console.log(1212)
     if (curComponent && curComponent.instance?.style) {
       const o: any = {}
       curComponent.instance.style.pos.forEach(item => {
@@ -88,16 +84,12 @@ const GetPos = () => {
   </div>
   );
 }
-export const GetfontSet = () => {
+export const GetfontSet = (props: any) => {
   const { basicStore, dispatch } = useContext(basicStoreConText)
-  const curComponent = useMemo(() => {
-    if (basicStore.index)
-      return basicStore.componentData.find(item => item.instance?.id === basicStore.index) || null
-    return null
-  }, [basicStore])
+  const curComponent = props.curComponent as ComponentObj | null;
   const [form] = Form.useForm();
   const onFontChange = (a: any) => {
-    console.log(JSON.stringify (curComponent?.instance?.style.values))
+    console.log(JSON.stringify(curComponent?.instance?.style.values))
     dispatch({ type: "changeCurComponentStyle", payload: { style: { ...a }, type: 'font' } })
 
   }
@@ -106,7 +98,6 @@ export const GetfontSet = () => {
       const o: any = {}
       curComponent.instance.style.fonts.forEach(item => {
         o[item.style] = item.val
-
       })
       form.setFieldsValue(o)
     }
@@ -135,21 +126,22 @@ export const GetfontSet = () => {
 
 
 
-export const getStyle = () => {
-  // useState("")
-  return <Collapse className="style-collapse" defaultActiveKey={['1', '2']} onChange={onChange}>
+export const getStyle = (curComponent: ComponentObj | null) => {
 
-    <Panel header="位置" key="1">
-      <GetPos></GetPos>
+
+  return <Collapse className="style-collapse" defaultActiveKey={['1', '2']} onChange={onChange}>
+    {curComponent?.instance?.style.pos.length ? <Panel header="位置" key="1">
+      <GetPos curComponent={curComponent}></GetPos>
 
       {/* {GetPos()} */}
-    </Panel>
+    </Panel> : null
+    }
 
-    <Panel header="字体" key="2">
-      <GetfontSet></GetfontSet>
+{curComponent?.instance?.style.fonts.length ?<Panel header="字体" key="2">
+      <GetfontSet curComponent={curComponent}></GetfontSet>
 
       {/* {getfontSet()} */}
-    </Panel>
+    </Panel>:null}
   </Collapse>
 
 }
