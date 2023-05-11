@@ -15,7 +15,6 @@ export default (state: BasicStore, action: { type: string, payload: any }) => {
     case 'removeComponent':
       return removeComponent(state, payload)
     case 'setIndex':
-      console.log(payload)
       return {
         index: payload.id,
         componentData: state.componentData

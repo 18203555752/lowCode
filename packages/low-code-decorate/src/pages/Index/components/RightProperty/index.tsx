@@ -20,7 +20,7 @@ const onChange = (key: string) => {
 export const RightProperty = () => {
   const { basicStore, dispatch } = useContext(basicStoreConText)
   const curComponent = useMemo(() => {
-    if (basicStore.index){
+    if (basicStore.index) {
       return basicStore.componentData.find(item => item.instance?.id === basicStore.index) || null
 
     }
