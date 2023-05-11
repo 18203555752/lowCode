@@ -57,6 +57,8 @@ function removeComponent(state: BasicStore, payload: any) {
 function changeCurComponentStyle(state: BasicStore, payload: any) {
 
   const component = state.componentData.find((component) => component.instance?.id === state.index)
+
+
   if (!component) return state
   if (payload.type === 'font') {
     component!.instance!.style.setFont(payload.style)
@@ -64,10 +66,11 @@ function changeCurComponentStyle(state: BasicStore, payload: any) {
   } else {
     component!.instance!.style.setPos(payload.style)
   }
+  console.log(12)
 
   return {
     index: state.index,
-    componentData:[...state.componentData]
+    componentData: [...state.componentData]
   }
 }
 
@@ -83,7 +86,7 @@ function changeCurComponentAttr(state: BasicStore, payload: any) {
 
   // }
 
-return {
+  return {
     index: state.index,
     componentData: state.componentData
   }

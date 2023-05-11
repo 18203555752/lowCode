@@ -14,9 +14,9 @@ root.render(
   <ConfigProvider theme={{
     algorithm: theme.darkAlgorithm,
   }}>
-  {/* // <React.StrictMode> */}
+  {/* <React.StrictMode> */}
       <App />
-  {/* // </React.StrictMode> */}
+  {/* </React.StrictMode> */}
   </ConfigProvider>
 )
 

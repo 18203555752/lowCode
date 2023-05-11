@@ -14,13 +14,16 @@ import { basicStoreConText, } from '@/contexts/componentList';
 
 const onChange = (key: string) => {
   console.log(key);
+
 };
 
 export const RightProperty = () => {
   const { basicStore, dispatch } = useContext(basicStoreConText)
   const curComponent = useMemo(() => {
-    if (basicStore.index)
+    if (basicStore.index){
       return basicStore.componentData.find(item => item.instance?.id === basicStore.index) || null
+
+    }
     return null
   }, [basicStore])
 

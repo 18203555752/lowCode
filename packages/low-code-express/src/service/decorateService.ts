@@ -10,6 +10,7 @@ interface Decorate {
 interface DecorateService {
   createDecorate(decorate: Decorate): Promise<any>;
   getDecorateById(id: number): Promise<Decorate>;
+  getDecorateByUserId(userId: number): Promise<Decorate[]>;
   updateDecorate(decorate: Decorate): Promise<any>;
 
 }
@@ -21,11 +22,10 @@ export function createDecorateService(connection: mysql.Pool): DecorateService {
 
     async getDecorateById(id: number) {
       const Decorate = await decorateDao.findById(id);
-
-      // if (!Decorate) {
-      //   throw new Error(`Decorate with id ${id} not found`);
-      // }
-
+      return Decorate;
+    },
+    async getDecorateByUserId(userId: number) {
+      const Decorate = await decorateDao.getListByUserId(userId);
       return Decorate;
     },
     async createDecorate(decorate: Decorate) {

@@ -97,7 +97,7 @@ export const GetfontSet = () => {
   }, [basicStore])
   const [form] = Form.useForm();
   const onFontChange = (a: any) => {
-    console.log(555)
+    console.log(JSON.stringify (curComponent?.instance?.style.values))
     dispatch({ type: "changeCurComponentStyle", payload: { style: { ...a }, type: 'font' } })
 
   }
