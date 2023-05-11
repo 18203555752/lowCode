@@ -7,14 +7,14 @@ import { databaseConfig } from './config/databaseConfig';
 import { createrDecorateController } from './controller/decorateController';
 
 
-const app = express();
-app.use(bodyParser.json());
-app.use(cors());
+// const app = express();
+// app.use(bodyParser.json());
+// app.use(cors());
 
 async function startServer() {
   const connection = await mysql.createPool(databaseConfig);
 
-  const app = createUserController(connection);
+  // const app = createUserController(connection);
   const decorateApp = createrDecorateController(connection);
 
   decorateApp.listen(5000, () => {

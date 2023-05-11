@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "module",
+
   "dependencies": {
     "@rollup/plugin-commonjs": "^24.1.0",
     "@rollup/plugin-json": "^6.0.0",
