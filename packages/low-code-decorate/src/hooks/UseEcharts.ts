@@ -1,12 +1,14 @@
 import * as echarts from 'echarts'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import mydark from './theme'
-export const useEcharts = (chartEl: React.RefObject<HTMLDivElement>)=> {
-  let chart: echarts.EChartsType
+let chart: echarts.EChartsType
+export const useEcharts = (chartEl: React.RefObject<HTMLDivElement>)=> {  
   echarts.registerTheme('mydark', mydark)
+  const [chart, setChart] = useState<echarts.EChartsType | null>(null)
   useEffect(()=> {
     console.log(chartEl.current)
-    chart = echarts.init(chartEl.current!, 'mydark')
+    const chart = echarts.init(chartEl.current!, 'mydark')
+    setChart(chart)
     return ()=> {
       chart.clear()
       chart.dispose()
@@ -17,6 +19,7 @@ export const useEcharts = (chartEl: React.RefObject<HTMLDivElement>)=> {
    * desc 更新图表
   */
   const updateChart = (option: echarts.EChartsOption)=> {
+    console.log(chart)
     if(!chart) return
     chart.clear()
     chart.setOption(option)

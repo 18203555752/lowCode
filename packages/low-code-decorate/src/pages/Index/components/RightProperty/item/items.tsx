@@ -8,7 +8,7 @@ export const getFormItem = (item: StyleItem, i = 0) => {
   switch (item.type) {
     case StyleItemType.Number:
       return <Form.Item
-      key={item.style}
+      key={item.style+ i}
         label={item.name}
         name={item.style}
       >
@@ -18,7 +18,7 @@ export const getFormItem = (item: StyleItem, i = 0) => {
       </Form.Item>
     case StyleItemType.TXT:
       return <Form.Item
-        key={item.style}
+        key={item.style+ i}
         label={item.name}
         name={item.style}
       >
@@ -26,7 +26,7 @@ export const getFormItem = (item: StyleItem, i = 0) => {
       </Form.Item>
     case StyleItemType.Switch:
       return <Form.Item
-        key={item.style}
+        key={item.style+ i}
         label={item.name}
         name={item.style}
       >
@@ -35,7 +35,7 @@ export const getFormItem = (item: StyleItem, i = 0) => {
       </Form.Item>
     case StyleItemType.Select:
       return <Form.Item
-        key={item.style}
+        key={item.style+ i}
         label={item.name}
         name={item.style}
       >
@@ -49,7 +49,7 @@ export const getFormItem = (item: StyleItem, i = 0) => {
 
     case StyleItemType.Color:
       return <Form.Item
-        key={item.style}
+        key={item.style+ i}
         label={item.name}
         name={item.style}
         style={{ position: "relative", "zIndex": 100 - i }}

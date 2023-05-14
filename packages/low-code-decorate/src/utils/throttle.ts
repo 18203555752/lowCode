@@ -33,8 +33,6 @@ export const throttle = (fn: any)=> {
   }
 }
 export const throttle1 = (fn: any)=> {
-  let time = new Date().getTime()
-  let timer: any = null
   return function (...args: any[]) {
     fn(...args)
   }

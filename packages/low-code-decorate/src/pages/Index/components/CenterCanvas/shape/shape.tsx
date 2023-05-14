@@ -17,7 +17,7 @@ interface Style{
   left: string
   top: string
 }
-const CenterCanvas:FC<Props> = ({id, index, children, styles, component, setExitGrid}) => {
+const Shape:FC<Props> = ({id, index, children, styles, component, setExitGrid}) => {
   const {basicStore, dispatch} = useContext(basicStoreConText)
   const {index: curIndex} = basicStore
 
@@ -101,4 +101,4 @@ const CenterCanvas:FC<Props> = ({id, index, children, styles, component, setExit
     </div>)
 }
 
-export default CenterCanvas
+export default Shape

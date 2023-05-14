@@ -65,7 +65,7 @@ function changeCurComponentStyle(state: BasicStore, payload: any) {
   } else {
     component!.instance!.style.setPos(payload.style)
   }
-  console.log(12)
+  // console.log(12)
 
   return {
     index: state.index,
@@ -74,7 +74,8 @@ function changeCurComponentStyle(state: BasicStore, payload: any) {
 }
 
 function changeCurComponentAttr(state: BasicStore, payload: any) {
-  const component = state.componentData.find((component) => component.instance?.id === payload.id)
+  console.log(payload)
+  const component = state.componentData.find((component) => component.instance?.id === state.index)
   component?.instance?.attr.setAttr(payload.type, payload)
   // console.log(state)
   // if (payload.type == 'font') {
@@ -87,6 +88,6 @@ function changeCurComponentAttr(state: BasicStore, payload: any) {
 
   return {
     index: state.index,
-    componentData: state.componentData
+    componentData: [...state.componentData]
   }
 }

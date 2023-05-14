@@ -2,6 +2,7 @@
 import { nanoid } from 'nanoid'
 import { Attrs, StyleItem, Styles } from './type'
 import { configAttr, ConfigAttrKey, ConfigKey, configStyle } from './config'
+import { ExampleData, RequestData } from './requestData'
 
 type StyleObj = {
   [key in ConfigKey]?: StyleItem
@@ -162,12 +163,20 @@ export class Style {
 
 }
 
-type AttrObj = {
+export type AttrObj = {
   [key in ConfigAttrKey]?: StyleItem
 }
 
 type AttrClz = "_publicAttr" | "_basicAttr" | "_dataAttr" | "_labelAttr" | "_axisAttr"
-
+enum DataType{
+  EXAMPLE = 'EXAMPLE',
+  STATIC = 'STATIC',
+  REQUEST = 'REQUEST',
+}
+interface DataConfig {
+  type: DataType
+  requestConfig: RequestData
+}
 /**
  * 组件的基础属性
  */
@@ -264,14 +273,16 @@ export class Attr {
    * @param attrObj 
    */
   setAttr(type: AttrClz, attrObj: any) {
+    console.log(type, attrObj)
     if (this[type]) {
       for (let key in attrObj) {
         let tmp = key as ConfigAttrKey
         if (this[type][tmp]) {
           this[type][tmp]!.val = attrObj[tmp]
-        }
-
+        }        
       }
+      this[type] = {...this[type]}
+      // console.log(this[type])
     }
   }
 
@@ -283,14 +294,14 @@ export class ComponentInfo {
   name = ""
   private _style: Style
   private _attr!: Attr
-
+  private _dataConfig?: DataConfig
   constructor(name?: string) {
     if (name)
       this.name = name
     this._style = new Style()
     this._attr = new Attr()
   }
-  get attr() {
+  get attr(): Attr {
     return this._attr
   }
 
@@ -298,5 +309,27 @@ export class ComponentInfo {
     return this._style
   }
 
+  get exampleData():any  {
+    return undefined
+  }
 
+  get dataConfig() {
+    return this._dataConfig
+  }
+  
+  setDataConfig(type: DataType, config: any) {
+    switch (type){
+      case DataType.EXAMPLE:
+        return this._dataConfig = {
+          type: DataType.EXAMPLE,
+          requestConfig: new ExampleData(config)
+        }
+      // todos: 添加静态数据和 接口数据
+    }
+  }
+
+  loadExampleData() {
+    this.setDataConfig(DataType.EXAMPLE, this.exampleData)
+    console.log(this.exampleData)
+  }
 }

@@ -146,7 +146,7 @@ export const configAttr = {
     style: "maxVal",
     name: "最大值",
     readonly: false,
-    val: 99999,
+    val: 'auto',
   },
   'minVal': {
     type: StyleItemType.Number,
@@ -185,14 +185,14 @@ export const configAttr = {
   },
   'axisTxtColor': {
     type: StyleItemType.Color,
-    style: "axisColor",
+    style: "axisTxtColor",
     name: "轴线文字颜色",
     readonly: false,
     val: "#f0f",
   },
   'xMeshShow': {
     type: StyleItemType.Switch,
-    style: "axisColor",
+    style: "xMeshShow",
     name: "X网格线是否显示",
     readonly: false,
     val: false,

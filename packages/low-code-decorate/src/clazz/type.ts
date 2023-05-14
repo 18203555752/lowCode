@@ -22,7 +22,7 @@ export interface StyleItem {
   name: string;
   style: string;
   readonly?: boolean;
-  val: string | number;
+  val: string | number | boolean;
   unit?: string;
   list?: Option[];
   sort?: number;

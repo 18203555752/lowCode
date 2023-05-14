@@ -32,16 +32,18 @@ const CenterCanvas:FC<Props> = ({name}) => {
     e.preventDefault()
     e.stopPropagation()
     const componentName = e.dataTransfer.getData('componentName')
-    // return 
     if (componentName) {
       const listItem = componentList[componentName]
       const instance: ComponentInfo = new listItem.config()
+      // todo: 判断条件需调整构造函数
+      if(instance.exampleData){
+        instance.loadExampleData()
+      }      
       const EditorRectInfo = document.getElementById('editor')!.getBoundingClientRect()
       const x = e.pageX - EditorRectInfo.left
       const y = e.pageY - EditorRectInfo.top
       instance.style.setPos({left: x, top: y})
       const component = {...listItem, instance}
-      // console.log(component, x,y)
       dispatch({type: 'appendComponent', payload: component})
     }
   }
@@ -66,7 +68,7 @@ const CenterCanvas:FC<Props> = ({name}) => {
               index={index}
               component={item}
               styles={item.instance!.style.allStyles}>
-              <Component basic={item.instance!.attr.attrs._basicAttr}></Component>
+              <Component component={item} basic={item.instance!.attr.attrs._basicAttr}></Component>
             </Shape>            
         </Suspense>)})}  
       </div>
